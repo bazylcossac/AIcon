@@ -28,7 +28,7 @@ export default function Home() {
 
       <main className="flex flex-col justify-center items-center px-4 gap-30">
         <section className="flex flex-col items-center justify-center">
-          <p className="text-6xl font-extrabold mt-24 max-w-[900px] text-center flex">
+          <p className="text-4xl md:text-6xl font-extrabold mt-24 max-w-[900px] text-center flex">
             Create Amazing And Creative Stuff Using OpenAI Models
           </p>
           <p className="max-w-[500px] text-center mt-4 font-semibold text-white/80">
@@ -42,17 +42,17 @@ export default function Home() {
           <Image
             src={dashboardImage}
             alt="main dashboard image"
-            width={1000}
-            height={800}
+            width={1200}
+            height={1200}
             quality={100}
             className="border-8 border-neutral-700 rounded-xl mt-8"
           />
         </section>
         <section className="flex flex-col items-center justify-center ">
-          <p className="text-3xl font-extrabold max-w-[900px] text-center flex">
+          <p className="text-2xl md:text-3xl font-extrabold max-w-[900px] text-center flex">
             Tired of jumping from site to site to just generate something?
           </p>
-          <p className="font-bold mt-4">
+          <p className="font-bold mt-4 text-sm ">
             With Gen<span className="text-blue-600">AI</span> you can:
           </p>
           <ul className="mt-4 font-semibold bg-green-800/10 p-10 rounded-md border-1 border-green-950">
@@ -71,14 +71,14 @@ export default function Home() {
           </ul>
         </section>
         <section className="flex flex-col items-center justify-center gap-20">
-          <div className="flex flex-col items-center mb-20">
+          <div className="flex flex-col items-center md:mb-20">
             <p className="text-blue-500 font-bold text-xs">FEATURES</p>
-            <p className="text-4xl font-extrabold max-w-[500px] text-center">
+            <p className="text-2xl md:text-4xl font-extrabold max-w-[500px] text-center">
               All Your Imaginations, Effortlessly Within Reach{" "}
             </p>
           </div>
 
-          <div className="flex items-center gap-10">
+          <div className="flex flex-col md:flex-row md:items-center gap-10">
             <Image
               src={dashboardImage}
               alt="main dashboard image"
@@ -87,7 +87,7 @@ export default function Home() {
               quality={100}
               className="border-8 border-neutral-700 rounded-xl mt-8"
             />
-            <div className="max-w-[400px]">
+            <div className="md:max-w-[400px]">
               <p className="text-blue-500 font-bold">Your Plan</p>
               <p className="text-2xl font-bold">
                 Streamlined Project Oversight
@@ -100,7 +100,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-center gap-10">
+          <div className="flex flex-col md:flex-row md:items-center gap-10">
             <div className="max-w-[400px]">
               <p className="text-blue-500 font-bold">Work Items</p>
               <p className="text-2xl font-bold">Effortless Task Tracking</p>
@@ -120,9 +120,9 @@ export default function Home() {
             />
           </div>
 
-          <div className="flex items-center gap-10">
+          <div className="flex flex-col md:flex-row md:items-center gap-10">
             <Image
-              src={dashboardImage}
+              src={promptImage}
               alt="main dashboard image"
               width={700}
               height={500}
@@ -142,30 +142,76 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <div className="flex flex-col items-center justify-center">
-          <p className="text-6xl font-extrabold mt-24 max-w-[900px] text-center flex">
-            Create Amazing And Creative Stuff Using AI Models
-          </p>
-          <p className="max-w-[500px] text-center mt-4 font-semibold text-white/80">
-            Generate images, icons, translate text to speech. So much to do in
-            one place.
-          </p>
-          <button className="text-xs bg-blue-500 py-3 px-6 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer mt-8">
-            Get started now
-          </button>
-        </div>
-        <div className="flex flex-col items-center justify-center">
-          <p className="text-6xl font-extrabold mt-24 max-w-[900px] text-center flex">
-            Create Amazing And Creative Stuff Using AI Models
-          </p>
-          <p className="max-w-[500px] text-center mt-4 font-semibold text-white/80">
-            Generate images, icons, translate text to speech. So much to do in
-            one place.
-          </p>
-          <button className="text-xs bg-blue-500 py-3 px-6 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer mt-8">
-            Get started now
-          </button>
-        </div>
+        <section className="flex flex-col items-center justify-center md:mb-20">
+          <div className="flex flex-col items-center mb-20">
+            <p className="text-blue-500 font-bold text-xs">PRICING</p>
+            <p className="text-4xl font-extrabold max-w-[500px] text-center">
+              Start generating today!
+            </p>
+          </div>
+          <div>
+            <div className="flex flex-col md:flex-row justify-center gap-10">
+              <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+                <h3 className="mb-4 text-2xl font-semibold">Basic Plan</h3>
+                <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
+                  Basic plan that allows you to test our application.
+                </p>
+                <div className="mt-10">
+                  <p className="text-5xl font-extrabold mb-8">Free</p>
+
+                  <ul className="flex flex-col items-start gap-4">
+                    <li>✔ Free first generation</li>
+                    <li>✔ Maximum 20 items in storage</li>
+                    <li>✔ Acces to Finances</li>
+                    <li>✔ Possiblity to buy more Tokens</li>
+                  </ul>
+                </div>
+                <div className="flex justify-center mt-8 ">
+                  <button className="text-xs bg-white/30 px-6 py-3 rounded-2xl font-bold  ">
+                    In use
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8  dark:bg-blue-950/20 dark:text-white">
+                <h3 className="mb-4 text-2xl font-semibold">Premium</h3>
+                <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
+                  Let's you explore all capabilities power of our app
+                </p>
+
+                <div className="mt-10">
+                  <p className="text-5xl font-extrabold mb-8">$20</p>
+
+                  <ul className="flex flex-col items-start gap-4">
+                    <li>✔ Free 100 Tokens</li>
+                    <li>✔ No Storage limit</li>
+                    <li>✔ Acces to Finances</li>
+                    <li>✔ Discount for Tokens</li>
+                  </ul>
+                </div>
+                <div className="flex justify-center mt-8 ">
+                  <button className="text-xs bg-blue-500 px-6 py-3 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer">
+                    Sign in & Buy
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer className="w-full border-t border-white/20 md:p-10 py-5 ">
+          <div className="flex flex-row items-center md:px-10 md:justify-between justify-center">
+            <p className="text-xs text-white/50 text-center ">
+              Copyright @ 2024 ProjectPlannerAI. All Rights Reserved.
+            </p>
+            <div className="md:flex flex-col leading-0 hidden">
+              <h1 className="text-2xl font-extrabold">
+                Gen<span className="text-blue-600">AI</span>
+              </h1>
+              <p className="font-bold text-xs -mt-2">AI generator</p>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   );
