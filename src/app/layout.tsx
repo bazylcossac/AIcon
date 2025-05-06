@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "GenAI",
+  title: "AIcon",
   description: "Generate stuff using AI",
 };
 

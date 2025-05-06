@@ -182,7 +182,7 @@ export default function Home() {
               <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8  dark:bg-blue-950/20 dark:text-white">
                 <h3 className="mb-4 text-2xl font-semibold">Premium</h3>
                 <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-                  Let's you explore all capabilities power of our app
+                  Explore all capabilities and power of our app
                 </p>
 
                 <div className="mt-10">
@@ -232,7 +232,7 @@ export default function Home() {
         <footer className="w-full border-t border-white/20 md:p-10 py-5 ">
           <div className="flex flex-row items-center md:px-10 md:justify-between justify-center">
             <p className="text-xs text-white/50 text-center ">
-              Copyright @ 2024 ProjectPlannerAI. All Rights Reserved.
+              Copyright @ 2025 AIcon. All Rights Reserved.
             </p>
             <div className="md:flex flex-col leading-0 hidden">
               <h1 className="text-2xl font-extrabold">
