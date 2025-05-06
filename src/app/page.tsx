@@ -2,21 +2,25 @@ import Image from "next/image";
 import dashboardImage from "../../public/images/main-page.png";
 import ttsImage from "../../public/images/tts-image.png";
 import promptImage from "../../public/images/prompt-image.png";
+import myImage from "../../public/images/myimage.png";
+import Link from "next/link";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+
 export default function Home() {
   return (
     <div className="mt-2">
-      <nav className="flex justify-between items-center md:px-24 px-10 py-2 fixed top-0 right-0 left-0 z-50 backdrop-blur-lg bg-[#0b0b0b]/85  transition">
+      <nav className="flex justify-between items-center md:px-24 px-10 py-2 fixed top-0 right-0 left-0 z-50 backdrop-blur-lg bg-[#0b0b0b]/85 transition">
         <div className="flex flex-col leading-0">
           <h1 className="text-2xl font-extrabold">
-            Gen<span className="text-blue-600">AI</span>
+            <span className="text-blue-600">AI</span>con
           </h1>
           <p className="font-bold text-xs -mt-2">AI generator</p>
         </div>
         <ul className="hidden text-sm gap-8 text-neutral-400 font-semibold [&>*]:hover:cursor-pointer [&>*]:hover:text-neutral-200 transition md:flex ">
-          <button>Features</button>
-          <button>Pricing</button>
-          <button>Dashboard</button>
-          <button>Creators</button>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <Link href="/dashboard">Dashboard</Link>
+          <a href="#creators">Creators</a>
         </ul>
 
         <div className="flex gap-4">
@@ -70,6 +74,7 @@ export default function Home() {
             </li>
           </ul>
         </section>
+        <div id="features"></div>
         <section className="flex flex-col items-center justify-center gap-20">
           <div className="flex flex-col items-center md:mb-20">
             <p className="text-blue-500 font-bold text-xs">FEATURES</p>
@@ -142,6 +147,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <div id="pricing"></div>
         <section className="flex flex-col items-center justify-center md:mb-20">
           <div className="flex flex-col items-center mb-20">
             <p className="text-blue-500 font-bold text-xs">PRICING</p>
@@ -199,6 +205,30 @@ export default function Home() {
           </div>
         </section>
 
+        <div id="creators"></div>
+        <section>
+          <div className="flex flex-col items-center mb-20">
+            <p className="text-blue-500 font-bold text-xs">CREATORS</p>
+
+            <div className="mt-10 flex justify-center">
+              <Image
+                src={myImage}
+                alt="creator image - MichaŁ Strojny"
+                className="size-24 rounded-full"
+              />
+            </div>
+            <p className="mt-4 text-lg">Michał Strojny</p>
+            <div className="flex gap-4 justify-center mt-4 text-3xl">
+              <a href="https://github.com/bazylcossac" target="_blank">
+                <FaGithub />
+              </a>
+              <a href="https://www.linkedin.com/in/mstrojny/" target="_blank">
+                <FaLinkedin />
+              </a>
+            </div>
+          </div>
+        </section>
+
         <footer className="w-full border-t border-white/20 md:p-10 py-5 ">
           <div className="flex flex-row items-center md:px-10 md:justify-between justify-center">
             <p className="text-xs text-white/50 text-center ">
@@ -206,7 +236,7 @@ export default function Home() {
             </p>
             <div className="md:flex flex-col leading-0 hidden">
               <h1 className="text-2xl font-extrabold">
-                Gen<span className="text-blue-600">AI</span>
+                <span className="text-blue-600">AI</span>Con
               </h1>
               <p className="font-bold text-xs -mt-2">AI generator</p>
             </div>
