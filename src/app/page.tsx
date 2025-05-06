@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { signIn, auth } from "@/auth";
@@ -29,7 +28,7 @@ export default async function Home() {
               className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer fixed right-10 top-3"
               onClick={async () => {
                 "use server";
-                await signIn("github");
+                await signIn("google");
               }}
             >
               Get started now
@@ -50,6 +49,7 @@ export default async function Home() {
                 alt="logged user image"
                 width={30}
                 height={30}
+                quality={100}
                 className="rounded-full hover:brightness-80 transition cursor-pointer"
               />
             </div>
