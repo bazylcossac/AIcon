@@ -1,32 +1,59 @@
 import Image from "next/image";
-import dashboardImage from "../../public/images/main-page.png";
-import ttsImage from "../../public/images/tts-image.png";
-import promptImage from "../../public/images/prompt-image.png";
-import myImage from "../../public/images/myimage.png";
+
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { signIn, auth } from "@/auth";
 
-export default function Home() {
+export default async function Home() {
+  const user = await auth();
+  // get credits from db
   return (
     <div className="mt-2">
-      <nav className="flex justify-between items-center md:px-24 px-10 py-2 fixed top-0 right-0 left-0 z-50 backdrop-blur-lg bg-[#0b0b0b]/85 transition">
+      <nav className="flex justify-between items-center md:px-24 px-10 py-2 fixed top-0 right-0 left-0 z-50 backdrop-blur-lg bg-[#0b0b0b]/85 transition ">
         <div className="flex flex-col leading-0">
           <h1 className="text-2xl font-extrabold">
             <span className="text-blue-600">AI</span>con
           </h1>
           <p className="font-bold text-xs -mt-2">AI generator</p>
         </div>
-        <ul className="hidden text-sm gap-8 text-neutral-400 font-semibold [&>*]:hover:cursor-pointer [&>*]:hover:text-neutral-200 transition md:flex ">
+        <ul className="hidden text-sm gap-8 text-neutral-400 font-semibold [&>*]:hover:cursor-pointer [&>*]:hover:text-neutral-200 transition md:flex">
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="dashboard">Dashboard</Link>
           <a href="#creators">Creators</a>
         </ul>
 
-        <div className="flex gap-4">
-          <button className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer">
-            Get started now
-          </button>
+        <div className="flex gap-4 ">
+          {!user ? (
+            <button
+              className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer fixed right-10 top-3"
+              onClick={async () => {
+                "use server";
+                await signIn("github");
+              }}
+            >
+              Get started now
+            </button>
+          ) : (
+            <div className="flex items-center gap-2 fixed right-10 top-3">
+              <p className="text-xs hidden md:inline-block">
+                <span className="font-bold">12</span> Tokens
+              </p>
+              <Link
+                href="/dashboard/tokens"
+                className="hover:bg-blue-800 transition bg-blue-500 rounded-md"
+              >
+                <p className="p-2 -md text-xs font-bold">Buy Tokens</p>
+              </Link>
+              <Image
+                src={user.user!.image as string}
+                alt="logged user image"
+                width={30}
+                height={30}
+                className="rounded-full hover:brightness-80 transition cursor-pointer"
+              />
+            </div>
+          )}
         </div>
       </nav>
 
@@ -39,16 +66,19 @@ export default function Home() {
             Generate images, icons, translate text to speech. So much to do in
             one place.
           </p>
-          <button className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer mt-4">
-            Get started now
-          </button>
+          <Link href="/login">
+            <button className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer mt-4">
+              Get started now
+            </button>
+          </Link>
 
           <Image
-            src={dashboardImage}
+            src="/images/main-page.png"
             alt="main dashboard image"
             width={1200}
             height={1200}
             quality={100}
+            priority
             className="border-8 border-neutral-700 rounded-xl mt-8"
           />
         </section>
@@ -85,11 +115,12 @@ export default function Home() {
 
           <div className="flex flex-col md:flex-row md:items-center gap-10">
             <Image
-              src={dashboardImage}
+              src="/images/main-page.png"
               alt="main dashboard image"
               width={700}
               height={500}
               quality={100}
+              priority
               className="border-8 border-neutral-700 rounded-xl mt-8"
             />
             <div className="md:max-w-[400px]">
@@ -116,7 +147,7 @@ export default function Home() {
               </p>
             </div>
             <Image
-              src={ttsImage}
+              src="/images/tts-image.png"
               alt="main dashboard image"
               width={700}
               height={500}
@@ -127,7 +158,7 @@ export default function Home() {
 
           <div className="flex flex-col md:flex-row md:items-center gap-10">
             <Image
-              src={promptImage}
+              src="/images/prompt-image.png"
               alt="main dashboard image"
               width={700}
               height={500}
@@ -157,7 +188,7 @@ export default function Home() {
           </div>
           <div>
             <div className="flex flex-col md:flex-row justify-center gap-10">
-              <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+              <div className="flex flex-col p-6 mx-auto max-w-lg text-center   rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 bg-gray-800 text-white">
                 <h3 className="mb-4 text-2xl font-semibold">Basic Plan</h3>
                 <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
                   Basic plan that allows you to test our application.
@@ -179,7 +210,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8  dark:bg-blue-950/20 dark:text-white">
+              <div className="flex flex-col p-6 mx-auto max-w-lg text-center  rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 bg-blue-950/20 text-white">
                 <h3 className="mb-4 text-2xl font-semibold">Premium</h3>
                 <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
                   Explore all capabilities and power of our app
@@ -196,9 +227,11 @@ export default function Home() {
                   </ul>
                 </div>
                 <div className="flex justify-center mt-8 ">
-                  <button className="text-xs bg-blue-500 px-6 py-3 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer">
-                    Sign in & Buy
-                  </button>
+                  <Link href="/login">
+                    <button className="text-xs bg-blue-500 px-6 py-3 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer">
+                      Sign in & Buy
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -212,9 +245,11 @@ export default function Home() {
 
             <div className="mt-10 flex justify-center">
               <Image
-                src={myImage}
+                src="/images/myimage.png"
                 alt="creator image - MichaŁ Strojny"
                 className="size-24 rounded-full"
+                width={100}
+                height={100}
               />
             </div>
             <p className="mt-4 text-lg">Michał Strojny</p>
