@@ -13,11 +13,6 @@ declare module "next-auth" {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: DrizzleAdapter(db),
   callbacks: {
-    // authorized: async ({ request, auth }) => {
-    //   console.log(auth);
-    //   console.log(request);
-    //   return
-    // },
     async session({ session }) {
       return session;
     },

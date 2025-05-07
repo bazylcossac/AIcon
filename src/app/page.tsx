@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { signIn, auth } from "@/auth";
+import { trpcServer } from "@/trpc/trpcServer";
 
 export default async function Home() {
   const user = await auth();
+  const users = await trpcServer.getusers();
   // get credits from db
   // primise .all
   const handleSignIn = async () => {
@@ -15,7 +17,6 @@ export default async function Home() {
   return (
     <div className="mt-2">
       <nav className="flex justify-between items-center md:px-24 px-10 py-2 fixed top-0 right-0 left-0 z-50 backdrop-blur-lg bg-[#0b0b0b]/85 transition ">
-        {new Date().getMilliseconds()}
         <div className="flex flex-col leading-0">
           <h1 className="text-2xl font-extrabold">
             <span className="text-blue-600">AI</span>con
@@ -157,7 +158,7 @@ export default async function Home() {
               <p className="text-white/30 mt-2">
                 Enhance your workflow with a user-friendly platform designed for
                 quick task addition and streamlined prioritization, keeping your
-                team's objectives in clear focus..
+                team&apos;s objectives in clear focus..
               </p>
             </div>
             <Image
