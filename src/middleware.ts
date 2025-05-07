@@ -8,7 +8,8 @@ export const config = {
 
 export default async function middleware(req: NextRequest) {
   const session = await auth();
-  if (!session?.user && req.nextUrl.pathname.startsWith("/dashboard")) {
+
+  if (!session?.sessionToken && req.nextUrl.pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
