@@ -1,14 +1,22 @@
 "use client";
-import { useSession } from "next-auth/react";
+
 import React from "react";
+import { trpc } from "@/trpc/trpcClient";
 
 function Page() {
-  const user = useSession();
+  const { data: users, isLoading } = trpc.getusers.useQuery();
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div>
-      dashboard
-      <p>{user.data?.user?.name}</p>
+      <p>Users in db:</p>
+      <ul>
+        {users?.map((user) => (
+          <p key={user.id}>{user.name}</p>
+        ))}
+      </ul>
     </div>
   );
 }

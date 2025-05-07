@@ -3,9 +3,11 @@ import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { signIn, auth, signOut } from "@/auth";
 import { cn } from "@/lib/utils";
+import { cleanupSession } from "@/actions/actions";
 
 export default async function Home() {
   const user = await auth();
+
   // get credits from db
   // primise .all
   const handleSignIn = async () => {
@@ -15,7 +17,10 @@ export default async function Home() {
 
   const handleSignOut = async () => {
     "use server";
-    await signOut();
+    if (user) {
+      await cleanupSession(user.sessionToken);
+      await signOut();
+    }
   };
 
   return (
