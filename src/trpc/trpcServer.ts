@@ -5,5 +5,3 @@ export async function createTrpcServer() {
   const context = await createContext();
   return appRouter.createCaller(context);
 }
-
-export const trpcServer = await createTrpcServer();

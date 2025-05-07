@@ -1,17 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { signIn, auth } from "@/auth";
-import { trpcServer } from "@/trpc/trpcServer";
+import { signIn, auth, signOut } from "@/auth";
+import { cn } from "@/lib/utils";
 
 export default async function Home() {
   const user = await auth();
-  const users = await trpcServer.getusers();
   // get credits from db
   // primise .all
   const handleSignIn = async () => {
     "use server";
-    await signIn("google");
+    await signIn("google", { redirectTo: "/dashboard" });
+  };
+
+  const handleSignOut = async () => {
+    "use server";
+    await signOut();
   };
 
   return (
@@ -23,11 +27,36 @@ export default async function Home() {
           </h1>
           <p className="font-bold text-xs -mt-2">AI generator</p>
         </div>
-        <ul className="hidden text-sm gap-8 text-neutral-400 font-semibold [&>*]:hover:cursor-pointer [&>*]:hover:text-neutral-200 transition md:flex">
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <Link href="dashboard">Dashboard</Link>
-          <a href="#creators">Creators</a>
+        <ul className="hidden text-sm gap-8 text-neutral-400 font-semibold  transition md:flex">
+          <a
+            href="#features"
+            className="hover:text-neutral-200 hover:cursor-pointer"
+          >
+            Features
+          </a>
+          <a
+            href="#pricing"
+            className="hover:text-neutral-200 hover:cursor-pointer"
+          >
+            Pricing
+          </a>
+
+          <Link
+            href="dashboard"
+            className={cn("hover:text-neutral-200 cursor-not-allowed", {
+              "text-neutral-700 hover:text-neutral-700 cursor-not-allowed":
+                !user,
+              "cursor-pointer": user,
+            })}
+          >
+            Dashboard
+          </Link>
+          <a
+            href="#creators"
+            className="hover:text-neutral-200 hover:cursor-pointer"
+          >
+            Creators
+          </a>
         </ul>
 
         <div className="flex gap-4 ">
@@ -40,15 +69,12 @@ export default async function Home() {
             </button>
           ) : (
             <div className="flex items-center gap-2 fixed right-10 top-3">
-              <p className="text-xs hidden md:inline-block">
-                <span className="font-bold">12</span> Tokens
-              </p>
-              <Link
-                href="/dashboard/tokens"
-                className="hover:bg-blue-800 transition bg-blue-500 rounded-md"
+              <button
+                className="hover:bg-blue-800 transition bg-blue-500 rounded-md cursor-pointer"
+                onClick={handleSignOut}
               >
-                <p className="p-2 -md text-xs font-bold">Buy Tokens</p>
-              </Link>
+                <p className="p-2 -md text-xs font-bold">Sign Out</p>
+              </button>
               <Image
                 src={user.user!.image as string}
                 alt="logged user image"
