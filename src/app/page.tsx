@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -6,9 +7,16 @@ import { signIn, auth } from "@/auth";
 export default async function Home() {
   const user = await auth();
   // get credits from db
+  // primise .all
+  const handleSignIn = async () => {
+    "use server";
+    await signIn("google");
+  };
+
   return (
     <div className="mt-2">
       <nav className="flex justify-between items-center md:px-24 px-10 py-2 fixed top-0 right-0 left-0 z-50 backdrop-blur-lg bg-[#0b0b0b]/85 transition ">
+        {new Date().getMilliseconds()}
         <div className="flex flex-col leading-0">
           <h1 className="text-2xl font-extrabold">
             <span className="text-blue-600">AI</span>con
@@ -26,10 +34,7 @@ export default async function Home() {
           {!user ? (
             <button
               className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer fixed right-10 top-3"
-              onClick={async () => {
-                "use server";
-                await signIn("google");
-              }}
+              onClick={handleSignIn}
             >
               Get started now
             </button>
@@ -66,11 +71,21 @@ export default async function Home() {
             Generate images, icons, translate text to speech. So much to do in
             one place.
           </p>
-          <Link href="/login">
-            <button className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer mt-4">
+          {!user ? (
+            <button
+              className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer mt-4"
+              onClick={handleSignIn}
+            >
               Get started now
             </button>
-          </Link>
+          ) : (
+            <Link
+              href="/dashboard"
+              className="text-xs bg-blue-500  p-2 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer mt-4"
+            >
+              Go to Dashboard
+            </Link>
+          )}
 
           <Image
             src="/images/main-page.png"
@@ -227,11 +242,23 @@ export default async function Home() {
                   </ul>
                 </div>
                 <div className="flex justify-center mt-8 ">
-                  <Link href="/login">
-                    <button className="text-xs bg-blue-500 px-6 py-3 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer">
+                  {!user ? (
+                    <button
+                      className="text-xs bg-blue-500 px-6 py-3 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer"
+                      onClick={handleSignIn}
+                    >
                       Sign in & Buy
                     </button>
-                  </Link>
+                  ) : (
+                    // logged in => buy
+                    // already bought => go to dashboard
+                    <Link
+                      href="/dashboard"
+                      className="text-xs bg-blue-500 px-6 py-3 rounded-2xl font-bold  hover:bg-blue-600 transition cursor-pointer"
+                    >
+                      Go to Dashboard
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
