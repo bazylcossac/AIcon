@@ -15,11 +15,13 @@ export const appRouter = router({
     .input(z.string().uuid())
     .mutation(async (opts) => {
       const sessionToken = opts.input;
+      if(!sessionToken){
+        throw new TRPCError({code: "UNAUTHORIZED"})
+      }
       try {
         await db
           .delete(schema.sessions)
           .where(eq(schema.sessions.sessionToken, sessionToken));
-        console.log("deleted session");
       } catch {
         throw new TRPCError({ code: "NOT_FOUND" });
       }
