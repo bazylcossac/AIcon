@@ -11,7 +11,7 @@ function Skeleton({ className }: { className: string }) {
 
 function NavbarSkeleton() {
   return (
-    <div className="min-w-[200px] mt-2">
+    <div className="min-w-[200px] mt-2 hidden md:flex md:flex-col">
       <div className="mx-1.75">
         <Skeleton className="h-8 w-full mb-8" />
         <div className="flex flex-col gap-2 mb-8">

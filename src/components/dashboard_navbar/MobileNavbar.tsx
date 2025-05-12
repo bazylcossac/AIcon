@@ -19,7 +19,7 @@ function MobileNavbar() {
   const pathName = usePathname();
   return (
     <Sheet onOpenChange={setOpen} open={open}>
-      <SheetTrigger className="mr-4">
+      <SheetTrigger className="mr-4 md:hidden">
         <RxHamburgerMenu onClick={() => setOpen(true)} />
       </SheetTrigger>
       <SheetContent side="left" className="bg-black border-white/50">

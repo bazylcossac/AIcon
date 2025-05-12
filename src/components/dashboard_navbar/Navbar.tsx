@@ -22,8 +22,8 @@ function Navbar({ session }: { session: Session }) {
       setShortcut("⌘");
     }
   }, []);
-
   if (!shortCut) return <NavbarSkeleton />;
+  if (!isDesktop) return null;
 
   if (isDesktop) {
     return (
