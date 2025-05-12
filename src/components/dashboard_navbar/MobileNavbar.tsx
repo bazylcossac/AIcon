@@ -1,7 +1,8 @@
+"use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import SearchInput from "./SearchInput";
 import { RxHamburgerMenu } from "react-icons/rx";
 import {
@@ -13,22 +14,21 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-function MobileNavbar({ shortCut }: { shortCut: "CTRL" | "⌘" }) {
+function MobileNavbar() {
+  const [open, setOpen] = useState(false);
   const pathName = usePathname();
   return (
-    <Sheet>
-      <SheetTrigger>
-        <RxHamburgerMenu />
+    <Sheet onOpenChange={setOpen} open={open}>
+      <SheetTrigger className="mr-4">
+        <RxHamburgerMenu onClick={() => setOpen(true)} />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent side="left" className="bg-black border-white/50">
         <SheetHeader>
           <SheetTitle></SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
         <nav className="min-w-[200px] mt-2 ">
           <div className="mx-1.75">
-            <SearchInput shortCut={shortCut} />
-
             <div className="mb-6">
               <h2 className="text-xs font-bold tracking-widest mb-2 mx-4">
                 GET STARTED

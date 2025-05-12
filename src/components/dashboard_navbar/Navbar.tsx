@@ -6,9 +6,9 @@ import * as motion from "motion/react-client";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
-import MobileNavbar from "./MobileNavbar";
+import { Session } from "next-auth";
 
-function Navbar() {
+function Navbar({ session }: { session: Session }) {
   const [shortCut, setShortcut] = useState<"CTRL" | "⌘" | "">("");
   const pathName = usePathname();
   const isDesktop = useMediaQuery();
@@ -127,10 +127,6 @@ function Navbar() {
         </motion.div>
       </nav>
     );
-  }
-
-  if (!isDesktop) {
-    return <MobileNavbar shortCut={shortCut} />;
   }
 }
 
