@@ -11,7 +11,9 @@ function layout({ children }: { children: React.ReactNode }) {
       </div>
       {/* header */}
       <div className="flex flex-row h-[calc(100vh-4rem)]">
-        <Navbar />
+        <div>
+          <Navbar />
+        </div>
         <SessionProvider>
           <div className="bg-neutral-800 rounded-lg w-full m-2 overflow-y-auto">
             <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>

@@ -1,42 +1,31 @@
-"use client";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import SearchInput from "./SearchInput";
-import * as motion from "motion/react-client";
-import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import useMediaQuery from "@/lib/hooks/useMediaQuery";
-import MobileNavbar from "./MobileNavbar";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
+import SearchInput from "./SearchInput";
+import { RxHamburgerMenu } from "react-icons/rx";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
-function Navbar() {
-  const [shortCut, setShortcut] = useState<"CTRL" | "⌘" | "">("");
+function MobileNavbar({ shortCut }: { shortCut: "CTRL" | "⌘" }) {
   const pathName = usePathname();
-  const isDesktop = useMediaQuery();
-
-  useEffect(() => {
-    const system = navigator.userAgent.toLowerCase();
-    if (system.includes("win")) {
-      setShortcut("CTRL");
-    }
-    if (system.includes("mac")) {
-      setShortcut("⌘");
-    }
-  }, []);
-
-  if (!shortCut) return <div className="min-w-[200px] mt-2"></div>;
-
-  if (isDesktop) {
-    return (
-      <nav className="min-w-[200px] mt-2 ">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: 0.3,
-
-            ease: [0, 0.71, 0.2, 1.01],
-          }}
-        >
+  return (
+    <Sheet>
+      <SheetTrigger>
+        <RxHamburgerMenu />
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle></SheetTitle>
+          <SheetDescription></SheetDescription>
+        </SheetHeader>
+        <nav className="min-w-[200px] mt-2 ">
           <div className="mx-1.75">
             <SearchInput shortCut={shortCut} />
 
@@ -124,14 +113,10 @@ function Navbar() {
               </ul>
             </div>
           </div>
-        </motion.div>
-      </nav>
-    );
-  }
-
-  if (!isDesktop) {
-    return <MobileNavbar shortCut={shortCut} />;
-  }
+        </nav>
+      </SheetContent>
+    </Sheet>
+  );
 }
 
-export default Navbar;
+export default MobileNavbar;
