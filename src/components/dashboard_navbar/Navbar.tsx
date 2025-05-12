@@ -4,8 +4,6 @@ import React, { useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
 import * as motion from "motion/react-client";
 import { usePathname } from "next/navigation";
-import path from "path";
-import { PathnameContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 import { cn } from "@/lib/utils";
 
 function Navbar() {
@@ -42,8 +40,15 @@ function Navbar() {
             <h2 className="text-xs font-bold tracking-widest mb-2 mx-4">
               GET STARTED
             </h2>
-            <ul className="flex flex-col [&>*]:text-white/70 [&>*]:text-sm [&>*]:py-1.75 [&>*]:hover:text-white [&>*]:hover:bg-neutral-700 [&>*]:rounded-md [&>*]:px-4 [&>*]:transition [&>*]:cursor-pointer">
-              <Link href="/dashboard">Overview</Link>
+            <ul className="flex flex-col [&>*]:text-sm [&>*]:py-1.75 [&>*]:hover:text-white [&>*]:hover:bg-neutral-700 [&>*]:rounded-md [&>*]:px-4 [&>*]:transition [&>*]:cursor-pointer">
+              <Link
+                href="/dashboard"
+                className={cn("text-white/70", {
+                  "bg-neutral-700 text-white": pathName === "/dashboard",
+                })}
+              >
+                Overview
+              </Link>
             </ul>
           </div>
           <div className="">
@@ -68,6 +73,22 @@ function Navbar() {
                 })}
               >
                 Text to Speech
+              </Link>
+            </ul>
+          </div>
+          <div className="mt-6">
+            <h2 className="text-xs font-bold tracking-widest mb-2 mx-4">
+              STORAGE
+            </h2>
+            <ul className="flex flex-col [&>*]:m-0.25 [&>*]:text-sm [&>*]:py-1.75 [&>*]:hover:text-white [&>*]:hover:bg-neutral-700 [&>*]:rounded-md [&>*]:px-4 [&>*]:transition [&>*]:cursor-pointer">
+              <Link
+                href="/dashboard/storage"
+                className={cn("text-white/70", {
+                  "bg-neutral-700 text-white":
+                    pathName === "/dashboard/storage",
+                })}
+              >
+                Storage
               </Link>
             </ul>
           </div>
