@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function useShortcutOpenInput(callback: () => void) {
   const system = navigator.userAgent.toLocaleLowerCase();

@@ -1,14 +1,17 @@
 "use client";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
 import { Session } from "next-auth";
-
+import { useAppStore } from "@/store/appStore";
 import React from "react";
 import { CgArrowsV } from "react-icons/cg";
 import MobileNavbar from "../dashboard_navbar/MobileNavbar";
 import useShortcutOpenInput from "@/lib/hooks/useShortcutOpenInput";
 
 function HeaderClient({ session }: { session: Session }) {
-  useShortcutOpenInput(() => {});
+  const setShowSearchBarDialog = useAppStore(
+    (state) => state.setShowSearchBarDialog
+  );
+  useShortcutOpenInput(() => setShowSearchBarDialog(true));
   const isDesktop = useMediaQuery();
   return (
     <div className="flex flex-row items-center">

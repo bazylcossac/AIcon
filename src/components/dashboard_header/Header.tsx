@@ -1,10 +1,7 @@
-import { auth } from "@/auth";
 import Link from "next/link";
 import React, { Suspense } from "react";
-
 import { IoSettingsOutline } from "react-icons/io5";
 import Image from "next/image";
-// import HeaderClient from "./HeaderClient";
 import dynamic from "next/dynamic";
 import { Session } from "next-auth";
 const HeaderClient = dynamic(() => import("./HeaderClient"));

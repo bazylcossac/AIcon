@@ -8,9 +8,12 @@ import { cn } from "@/lib/utils";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
 import { Session } from "next-auth";
 import NavbarSkeleton from "./NavbarSkeleton";
+import { useAppStore } from "@/store/appStore";
+import SearchInputDialog from "../search_input_dialog/SearchInputDialog";
 
 function Navbar({ session }: { session: Session }) {
   const [shortCut, setShortcut] = useState<"CTRL" | "⌘" | "">("");
+  const showSearchBarDialog = useAppStore((state) => state.showSearchBarDialog);
   const pathName = usePathname();
   const isDesktop = useMediaQuery();
   useEffect(() => {
@@ -22,7 +25,9 @@ function Navbar({ session }: { session: Session }) {
       setShortcut("⌘");
     }
   }, []);
+
   if (!shortCut) return <NavbarSkeleton />;
+
   if (!isDesktop) return null;
 
   if (isDesktop) {
@@ -125,6 +130,7 @@ function Navbar({ session }: { session: Session }) {
             </div>
           </div>
         </motion.div>
+        {showSearchBarDialog && <SearchInputDialog />}
       </nav>
     );
   }

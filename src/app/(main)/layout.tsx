@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { SessionProvider } from "next-auth/react";
 import dynamic from "next/dynamic";
 const Header = dynamic(() => import("@/components/dashboard_header/Header"));
