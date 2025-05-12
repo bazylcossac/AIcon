@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import { Input } from "../ui/input";
 import { CiSearch } from "react-icons/ci";
 
 function SearchInputDialog() {
+  const [input, setInput] = useState("");
   const showSearchBarDialog = useAppStore((state) => state.showSearchBarDialog);
   const setShowSearchBarDialog = useAppStore(
     (state) => state.setShowSearchBarDialog
@@ -30,10 +31,14 @@ function SearchInputDialog() {
           <Input
             className="ring-0  border-0 focus-visible:ring-offset-0 focus-visible:ring-0 "
             placeholder="Search"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
         </div>
 
-        <p className="text-sm text-white/30 text-center">No results</p>
+        <p className="text-sm text-white/30 text-center">
+          {!input ? "No results" : `Results for ${input}`}
+        </p>
       </DialogContent>
     </Dialog>
   );

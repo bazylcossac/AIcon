@@ -32,7 +32,7 @@ function Navbar({ session }: { session: Session }) {
 
   if (isDesktop) {
     return (
-      <nav className="min-w-[200px] mt-2 ">
+      <nav className="min-w-[200px] h-full overflow-y-hidden mt-2">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -41,6 +41,7 @@ function Navbar({ session }: { session: Session }) {
 
             ease: [0, 0.71, 0.2, 1.01],
           }}
+          className="h-full"
         >
           <div className="mx-1.75">
             <SearchInput shortCut={shortCut} />
@@ -66,13 +67,13 @@ function Navbar({ session }: { session: Session }) {
               </h2>
               <ul className="flex flex-col [&>*]:m-0.25 [&>*]:text-sm [&>*]:py-1.75 [&>*]:hover:text-white [&>*]:hover:bg-neutral-700 [&>*]:rounded-md [&>*]:px-4 [&>*]:transition [&>*]:cursor-pointer">
                 <Link
-                  href="/dashboard/icons"
+                  href="/dashboard/images"
                   className={cn("text-white/70", {
                     "bg-neutral-700 text-white":
-                      pathName === "/dashboard/icons",
+                      pathName === "/dashboard/images",
                   })}
                 >
-                  Icons
+                  Images
                 </Link>
 
                 <Link
@@ -86,6 +87,7 @@ function Navbar({ session }: { session: Session }) {
                 </Link>
               </ul>
             </div>
+
             <div className="mt-6">
               <h2 className="text-xs font-bold tracking-widest mb-2 mx-4">
                 STORAGE
@@ -102,6 +104,7 @@ function Navbar({ session }: { session: Session }) {
                 </Link>
               </ul>
             </div>
+
             <div className="mt-6">
               <h2 className="text-xs font-bold tracking-widest mb-2 mx-4">
                 COSTS
@@ -130,6 +133,7 @@ function Navbar({ session }: { session: Session }) {
             </div>
           </div>
         </motion.div>
+
         {showSearchBarDialog && <SearchInputDialog />}
       </nav>
     );

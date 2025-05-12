@@ -8,11 +8,21 @@ const HeaderClient = dynamic(() => import("./HeaderClient"));
 async function Header({ session }: { session: Session }) {
   return (
     <>
-      <nav className="h-full flex items-center justify-between mx-4">
+      <header className="h-full flex items-center justify-between mx-4">
         <Suspense fallback={<div>Loading...</div>}>
           <HeaderClient session={session} />
         </Suspense>
         <div className="flex flex-row items-center gap-4">
+          <Link
+            href="/dashboard/tokens"
+            className="text-[11px] bg-white px-2 py-1 rounded-md text-black font-semibold hover:bg-white/70 transition"
+          >
+            Buy Tokens
+          </Link>
+          <div className="text-xs">
+            <span className="text-sm font-bold mx-1">12</span>Tokens
+          </div>
+          <p className="font-bold mx-1 text-white/50">/</p>
           <Link
             href="/dashboard"
             className="text-sm text-white/70 hover:text-white hidden md:inline-block"
@@ -29,7 +39,7 @@ async function Header({ session }: { session: Session }) {
             className="rounded-full"
           />
         </div>
-      </nav>
+      </header>
     </>
   );
 }

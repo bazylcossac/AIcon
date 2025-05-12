@@ -134,3 +134,17 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #0e0d0d;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #343434;
+}
