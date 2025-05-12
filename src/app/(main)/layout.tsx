@@ -1,7 +1,8 @@
 import React, { Suspense } from "react";
 import { SessionProvider } from "next-auth/react";
-import Navbar from "@/components/dashboard_navbar/Navbar";
-import Header from "@/components/dashboard_header/Header";
+import dynamic from "next/dynamic";
+const Header = dynamic(() => import("@/components/dashboard_header/Header"));
+const Navbar = dynamic(() => import("@/components/dashboard_navbar/Navbar"));
 import { auth } from "@/auth";
 
 async function layout({ children }: { children: React.ReactNode }) {
@@ -19,7 +20,7 @@ async function layout({ children }: { children: React.ReactNode }) {
         </div>
         <SessionProvider>
           <div className="bg-neutral-800 rounded-lg w-full m-2 overflow-y-auto">
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            {children}
           </div>
         </SessionProvider>
       </div>

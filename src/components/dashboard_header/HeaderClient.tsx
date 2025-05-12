@@ -5,8 +5,10 @@ import { Session } from "next-auth";
 import React from "react";
 import { CgArrowsV } from "react-icons/cg";
 import MobileNavbar from "../dashboard_navbar/MobileNavbar";
+import useShortcutOpenInput from "@/lib/hooks/useShortcutOpenInput";
 
 function HeaderClient({ session }: { session: Session }) {
+  useShortcutOpenInput(() => {});
   const isDesktop = useMediaQuery();
   return (
     <div className="flex flex-row items-center">
