@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
-import SearchInput from "./SearchInput";
+
 import { RxHamburgerMenu } from "react-icons/rx";
 import {
   Sheet,

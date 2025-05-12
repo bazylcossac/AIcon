@@ -7,12 +7,12 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
 import { Session } from "next-auth";
+import NavbarSkeleton from "./NavbarSkeleton";
 
 function Navbar({ session }: { session: Session }) {
   const [shortCut, setShortcut] = useState<"CTRL" | "⌘" | "">("");
   const pathName = usePathname();
   const isDesktop = useMediaQuery();
-
   useEffect(() => {
     const system = navigator.userAgent.toLowerCase();
     if (system.includes("win")) {
@@ -23,7 +23,7 @@ function Navbar({ session }: { session: Session }) {
     }
   }, []);
 
-  if (!shortCut) return <div className="min-w-[200px] mt-2"></div>;
+  if (!shortCut) return <NavbarSkeleton />;
 
   if (isDesktop) {
     return (

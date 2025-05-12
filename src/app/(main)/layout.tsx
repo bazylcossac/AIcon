@@ -9,11 +9,11 @@ async function layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="w-full h-full ">
-      <div className="w-full h-16">
+      <div className="w-full h-14">
         <Header session={session!} />
       </div>
       {/* header */}
-      <div className="flex flex-row h-[calc(100vh-4rem)]">
+      <div className="flex flex-row h-[calc(100vh-3.5rem)]">
         <div>
           <Navbar session={session!} />
         </div>
