@@ -3,7 +3,8 @@ export const initalArgs = {
   instructions: "",
   voice: "",
   speed: [1.0],
-  responseFormat: "",
+  responseFormat: "" as "mp3" | "wav",
+  message: "",
 };
 
 export type InitialType = typeof initalArgs;
@@ -13,4 +14,5 @@ export type ActionType =
   | { type: "SET_INSTRUCTIONS"; payload: string }
   | { type: "SET_VOICE"; payload: string }
   | { type: "SET_SPEED"; payload: number[] }
-  | { type: "SET_FORMAT"; payload: string };
+  | { type: "SET_FORMAT"; payload: string }
+  | { type: "SET_MESSAGE"; payload: string };

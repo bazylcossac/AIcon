@@ -4,6 +4,7 @@ import { GrStorage } from "react-icons/gr";
 import Link from "next/link";
 import TTSSettings from "@/components/text_to_speech/TTSSettings";
 import { ActionType, initalArgs, InitialType } from "@/lib/types";
+import { TSSOpenAIRequest } from "@/actions/actions";
 
 function reducer(state: InitialType, action: ActionType): InitialType {
   switch (action.type) {
@@ -17,6 +18,8 @@ function reducer(state: InitialType, action: ActionType): InitialType {
       return { ...state, speed: action.payload };
     case "SET_FORMAT":
       return { ...state, responseFormat: action.payload };
+    case "SET_MESSAGE":
+      return { ...state, message: action.payload };
   }
 }
 
@@ -39,8 +42,11 @@ function Page() {
           <p className="font-bold ">Generated speech will apear here</p>
         </div>
         <div className="mx-14 rounded-2xl flex flex-col  mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
-          <form>
+          <form action={() => TSSOpenAIRequest(state)}>
             <textarea
+              onChange={(e) =>
+                dispatch({ type: "SET_MESSAGE", payload: e.target.value })
+              }
               className="w-full p-4 rounded-2xl resize-none outline-none custom-scrollbar"
               placeholder="Enter your message..."
             ></textarea>
