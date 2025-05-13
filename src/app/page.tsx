@@ -78,7 +78,7 @@ export default async function Home() {
                 className="hover:bg-blue-800 transition bg-blue-500 rounded-md cursor-pointer"
                 onClick={handleSignOut}
               >
-                <p className="p-2 -md text-xs font-bold">Sign Out</p>
+                <p className="p-2 text-center text-xs font-bold">Sign Out</p>
               </button>
               <Image
                 src={user.user!.image as string}
