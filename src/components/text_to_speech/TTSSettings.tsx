@@ -17,8 +17,6 @@ function TextToSpeechSettings({
   state: InitialType;
   dispatch: React.ActionDispatch<[action: ActionType]>;
 }) {
-  // const [state, dispatch] = useReducer(reducer, initalArgs);
-
   return (
     <>
       <div className="flex flex-col">

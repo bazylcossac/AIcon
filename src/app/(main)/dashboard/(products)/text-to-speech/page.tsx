@@ -41,7 +41,7 @@ function Page() {
         <div className="mx-14 rounded-2xl flex flex-col  mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
           <form>
             <textarea
-              className="w-full  p-4 rounded-2xl resize-none outline-none custom-scrollbar"
+              className="w-full p-4 rounded-2xl resize-none outline-none custom-scrollbar"
               placeholder="Enter your message..."
             ></textarea>
             <div className="flex justify-end m-2">
