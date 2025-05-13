@@ -1,5 +1,5 @@
 "use client";
-import React, { useReducer } from "react";
+import React from "react";
 import {
   Select,
   SelectContent,
@@ -8,41 +8,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import { ActionType, InitialType } from "@/lib/types";
 
-const initalArgs = {
-  model: "",
-  instructions: "",
-  voice: "",
-  speed: [1.0],
-  responseFormat: "",
-};
-
-type InitialType = typeof initalArgs;
-
-type ActionType =
-  | { type: "SET_MODEL"; payload: string }
-  | { type: "SET_INSTRUCTIONS"; payload: string }
-  | { type: "SET_VOICE"; payload: string }
-  | { type: "SET_SPEED"; payload: number[] }
-  | { type: "SET_FORMAT"; payload: string };
-
-function reducer(state: InitialType, action: ActionType): InitialType {
-  switch (action.type) {
-    case "SET_MODEL":
-      return { ...state, model: action.payload };
-    case "SET_INSTRUCTIONS":
-      return { ...state, instructions: action.payload };
-    case "SET_VOICE":
-      return { ...state, voice: action.payload };
-    case "SET_SPEED":
-      return { ...state, speed: action.payload };
-    case "SET_FORMAT":
-      return { ...state, responseFormat: action.payload };
-  }
-}
-
-function TextToSpeechSettings() {
-  const [state, dispatch] = useReducer(reducer, initalArgs);
+function TextToSpeechSettings({
+  state,
+  dispatch,
+}: {
+  state: InitialType;
+  dispatch: React.ActionDispatch<[action: ActionType]>;
+}) {
+  // const [state, dispatch] = useReducer(reducer, initalArgs);
 
   return (
     <>

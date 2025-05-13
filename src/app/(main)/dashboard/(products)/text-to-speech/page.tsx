@@ -1,12 +1,27 @@
-import React from "react";
+"use client";
+import React, { useReducer } from "react";
 import { GrStorage } from "react-icons/gr";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-const TTSSettings = dynamic(
-  () => import("@/components/text_to_speech/TTSSettings")
-);
+import TTSSettings from "@/components/text_to_speech/TTSSettings";
+import { ActionType, initalArgs, InitialType } from "@/lib/types";
+
+function reducer(state: InitialType, action: ActionType): InitialType {
+  switch (action.type) {
+    case "SET_MODEL":
+      return { ...state, model: action.payload };
+    case "SET_INSTRUCTIONS":
+      return { ...state, instructions: action.payload };
+    case "SET_VOICE":
+      return { ...state, voice: action.payload };
+    case "SET_SPEED":
+      return { ...state, speed: action.payload };
+    case "SET_FORMAT":
+      return { ...state, responseFormat: action.payload };
+  }
+}
 
 function Page() {
+  const [state, dispatch] = useReducer(reducer, initalArgs);
   return (
     <section className="h-full w-full flex">
       <div className="flex-1 flex-col justify-between">
@@ -41,7 +56,7 @@ function Page() {
         </div>
       </div>
       <div className="flex flex-col md:min-w-[300px] border-l border-black gap-8 p-6">
-        <TTSSettings />
+        <TTSSettings state={state} dispatch={dispatch} />
       </div>
     </section>
   );
