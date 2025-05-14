@@ -10,13 +10,26 @@ export const appRouter = router({
   getusers: protectedProcedure.query(async () => {
     return await db.query.users.findMany();
   }),
-
+  uploadFile: protectedProcedure
+    .input(z.object({ authorId: z.string().uuid(), url: z.string().url() }))
+    .mutation(async (opts) => {
+      const { authorId, url } = opts.input;
+      if (!url) {
+        throw new Error("No url provided");
+      }
+      try {
+        await db.insert(schema.files).values({ authorId, url });
+      } catch (err) {
+        const error = err as Error;
+        throw new Error(error.message);
+      }
+    }),
   cleanupUserSession: protectedProcedure
     .input(z.string().uuid())
     .mutation(async (opts) => {
       const sessionToken = opts.input;
-      if(!sessionToken){
-        throw new TRPCError({code: "UNAUTHORIZED"})
+      if (!sessionToken) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
       try {
         await db

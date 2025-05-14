@@ -14,5 +14,5 @@ export type ActionType =
   | { type: "SET_INSTRUCTIONS"; payload: string }
   | { type: "SET_VOICE"; payload: string }
   | { type: "SET_SPEED"; payload: number[] }
-  | { type: "SET_FORMAT"; payload: string }
+  | { type: "SET_FORMAT"; payload: "mp3" | "wav" }
   | { type: "SET_MESSAGE"; payload: string };

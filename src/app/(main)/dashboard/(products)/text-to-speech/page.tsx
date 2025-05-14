@@ -5,6 +5,7 @@ import Link from "next/link";
 import TTSSettings from "@/components/text_to_speech/TTSSettings";
 import { ActionType, initalArgs, InitialType } from "@/lib/types";
 import { TSSOpenAIRequest } from "@/actions/actions";
+import { useSession } from "next-auth/react";
 
 function reducer(state: InitialType, action: ActionType): InitialType {
   switch (action.type) {
@@ -25,6 +26,7 @@ function reducer(state: InitialType, action: ActionType): InitialType {
 
 function Page() {
   const [state, dispatch] = useReducer(reducer, initalArgs);
+  const userId = useSession().data?.user?.id;
   return (
     <section className="h-full w-full flex">
       <div className="flex-1 flex-col justify-between">
@@ -42,7 +44,7 @@ function Page() {
           <p className="font-bold ">Generated speech will apear here</p>
         </div>
         <div className="mx-14 rounded-2xl flex flex-col  mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
-          <form action={() => TSSOpenAIRequest(state)}>
+          <form action={() => TSSOpenAIRequest(state, userId)}>
             <textarea
               onChange={(e) =>
                 dispatch({ type: "SET_MESSAGE", payload: e.target.value })
