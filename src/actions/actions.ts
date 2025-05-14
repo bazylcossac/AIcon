@@ -7,6 +7,7 @@ import fs from "fs";
 import path from "path";
 import OpenAI from "openai";
 import { UploadThingError } from "uploadthing/server";
+import { auth } from "@/auth";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET_KEY });
 
@@ -16,8 +17,8 @@ export async function cleanupSession(sessionToken: string) {
 }
 
 export async function TSSOpenAIRequest(settings: InitialType) {
+  const session = await auth();
   const speechFileName = `speech_${crypto.randomUUID()}.mp3`;
-  const speechFile = path.resolve(`./src/uploads/${speechFileName}`);
   const { model, instructions, voice, speed, responseFormat, message } =
     settings;
 
@@ -30,25 +31,30 @@ export async function TSSOpenAIRequest(settings: InitialType) {
     response_format: responseFormat,
   });
 
-  const buffer = Buffer.from(await response.arrayBuffer());
-  await fs.writeFileSync(speechFile, buffer);
+  const buffer = await response.arrayBuffer();
 
   try {
     const blob = new Blob([buffer], { type: `audio/${responseFormat}` });
+
     const file = new File([blob], speechFileName, {
       type: `audio/${responseFormat}`,
     });
-    const uploaded = utapi.uploadFiles([file]);
-    console.log(uploaded);
+
+    const uploaded = await utapi.uploadFiles([file]);
+    const url = uploaded[0].data?.ufsUrl;
+    console.log(url);
+
+    /// add file url to db
   } catch (error) {
-    throw new Error("Upload failed");
-  } finally {
-    fs.unlink(speechFile, (err) => {
-      if (err) {
-        console.error("Error deleting local file:", err);
-      } else {
-        console.log("Local file deleted successfully");
-      }
-    });
+    throw new UploadThingError(`File Upload Error | ${error}`);
+
+    //   } finally {
+    //     fs.unlink(speechFile, (err) => {
+    //       if (err) {
+    //         console.error("Error deleting local file:", err);
+    //       } else {
+    //         console.log("Local file deleted successfully");
+    //       }
+    //     });
   }
 }

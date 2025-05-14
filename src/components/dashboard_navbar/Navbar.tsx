@@ -85,6 +85,15 @@ function Navbar({ session }: { session: Session }) {
                 >
                   Text to Speech
                 </Link>
+                <Link
+                  href="/dashboard/speech-to-text"
+                  className={cn("text-white/70", {
+                    "bg-neutral-700 text-white":
+                      pathName === "/dashboard/speech-to-text",
+                  })}
+                >
+                  Speech to Text
+                </Link>
               </ul>
             </div>
 
