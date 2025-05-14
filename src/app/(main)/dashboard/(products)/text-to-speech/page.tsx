@@ -1,11 +1,13 @@
 "use client";
-import React, { useReducer } from "react";
+import React, { useReducer, useState, useRef, useEffect } from "react";
 import { GrStorage } from "react-icons/gr";
 import Link from "next/link";
 import TTSSettings from "@/components/text_to_speech/TTSSettings";
 import { ActionType, initalArgs, InitialType } from "@/lib/types";
 import { TSSOpenAIRequest } from "@/actions/actions";
 import { useSession } from "next-auth/react";
+import WavesurferPlayer from "@wavesurfer/react";
+import WaveSurfer from "wavesurfer.js";
 
 function reducer(state: InitialType, action: ActionType): InitialType {
   switch (action.type) {
@@ -24,9 +26,42 @@ function reducer(state: InitialType, action: ActionType): InitialType {
   }
 }
 
+let wavesurfer: WaveSurfer;
+
 function Page() {
   const [state, dispatch] = useReducer(reducer, initalArgs);
+  // const [wavesurfer, setWavesurfer] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const waveformRef = useRef(null);
+  const [fileUrl, setFileUrl] = useState("");
   const userId = useSession().data?.user?.id;
+
+  useEffect(() => {
+    if (!waveformRef.current || !fileUrl) return;
+
+    wavesurfer = WaveSurfer.create({
+      container: waveformRef.current,
+      waveColor: "green",
+      height: 100,
+      width: "35vw",
+      dragToSeek: true,
+    });
+
+    wavesurfer.load(fileUrl);
+
+    return () => wavesurfer.destroy();
+  }, [fileUrl]);
+
+  const onReady = (ws) => {
+    // setWavesurfer(ws);
+    setIsPlaying(false);
+  };
+
+  const onPlayPause = () => {
+    setIsPlaying((prev) => !prev);
+    return wavesurfer && wavesurfer.playPause();
+  };
+
   return (
     <section className="h-full w-full flex">
       <div className="flex-1 flex-col justify-between">
@@ -40,11 +75,40 @@ function Page() {
           </div>
         </div>
 
-        <div className="h-9/12 flex items-center justify-center">
-          <p className="font-bold ">Generated speech will apear here</p>
+        <div
+          className="h-9/12 flex items-center justify-center"
+          ref={waveformRef}
+        >
+          <button onClick={onPlayPause}>{isPlaying ? "Pause" : "Play"}</button>
+          {/* <div className="font-bold ">
+            {fileUrl ? (
+              <>
+                <WavesurferPlayer
+                  height={70}
+                  width="35vw"
+                  waveColor="green"
+                  dragToSeek
+                  url={fileUrl}
+                  onReady={onReady}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                />
+
+                <button onClick={onPlayPause}>
+                  {isPlaying ? "Pause" : "Play"}
+                </button>
+              </>
+            ) : // "Generated speech will apear here"
+            null}
+          </div> */}
         </div>
         <div className="mx-14 rounded-2xl flex flex-col  mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
-          <form action={() => TSSOpenAIRequest(state, userId)}>
+          <form
+            action={async () => {
+              const fileUrl = await TSSOpenAIRequest(state, userId);
+              setFileUrl(fileUrl);
+            }}
+          >
             <textarea
               onChange={(e) =>
                 dispatch({ type: "SET_MESSAGE", payload: e.target.value })
