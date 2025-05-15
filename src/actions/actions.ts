@@ -22,37 +22,36 @@ export async function TSSOpenAIRequest(
   }
   const trpcServer = await createTrpcServer();
   const speechFileName = `speech_${crypto.randomUUID()}.mp3`;
-  //   const { model, instructions, voice, speed, responseFormat, message } =
-  //     settings;
+  const { model, instructions, voice, speed, responseFormat, message } =
+    settings;
 
-  //   const response = await openai.audio.speech.create({
-  //     model,
-  //     input: message,
-  //     instructions,
-  //     voice,
-  //     speed: speed[0],
-  //     response_format: responseFormat,
-  //   });
+  const response = await openai.audio.speech.create({
+    model,
+    input: message,
+    instructions,
+    voice,
+    speed: speed[0],
+    response_format: responseFormat,
+  });
 
-  //   const buffer = await response.arrayBuffer();
+  const buffer = await response.arrayBuffer();
 
   try {
-    // const blob = new Blob([buffer], { type: `audio/${responseFormat}` });
+    const blob = new Blob([buffer], { type: `audio/${responseFormat}` });
 
-    // const file = new File([blob], speechFileName, {
-    //   type: `audio/${responseFormat}`,
-    // });
+    const file = new File([blob], speechFileName, {
+      type: `audio/${responseFormat}`,
+    });
 
-    // const uploaded = await utapi.uploadFiles([file]);
-    // if (!uploaded) {
-    //   throw new Error("Failed to Upload");
-    // }
-    // const url = uploaded[0]!.data!.ufsUrl;
-    // console.log(url);
+    const uploaded = await utapi.uploadFiles([file]);
+    if (!uploaded) {
+      throw new Error("Failed to Upload");
+    }
+    const url = uploaded[0]!.data!.ufsUrl;
 
-    // // uploads to db
-    // await trpcServer.uploadFile({ authorId: userId, url });
-    return "https://cx7sgeelsh.ufs.sh/f/sY6aElwL8UT71IRRZ9XMr0x74BwtRi8mEGoYaKNgWHck9UQS";
+    // uploads to db
+    await trpcServer.uploadFile({ authorId: userId, url });
+    return url;
   } catch (error) {
     throw new UploadThingError(`File Upload Error | ${error}`);
   }

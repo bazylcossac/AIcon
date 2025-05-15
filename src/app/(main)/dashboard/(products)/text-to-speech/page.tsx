@@ -1,5 +1,5 @@
 "use client";
-import React, { useReducer, useState, useRef, useEffect } from "react";
+import React, { useReducer, useState } from "react";
 import { GrStorage } from "react-icons/gr";
 import Link from "next/link";
 import TTSSettings from "@/components/text_to_speech/TTSSettings";
@@ -26,40 +26,22 @@ function reducer(state: InitialType, action: ActionType): InitialType {
   }
 }
 
-let wavesurfer: WaveSurfer;
-
-function Page() {
-  const [state, dispatch] = useReducer(reducer, initalArgs);
-  // const [wavesurfer, setWavesurfer] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const waveformRef = useRef(null);
-  const [fileUrl, setFileUrl] = useState("");
+export default function PageContent() {
   const userId = useSession().data?.user?.id;
+  const [state, dispatch] = useReducer(reducer, initalArgs);
+  const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [fileUrl, setFileUrl] = useState("");
 
-  useEffect(() => {
-    if (!waveformRef.current || !fileUrl) return;
-
-    wavesurfer = WaveSurfer.create({
-      container: waveformRef.current,
-      waveColor: "green",
-      height: 100,
-      width: "35vw",
-      dragToSeek: true,
-    });
-
-    wavesurfer.load(fileUrl);
-
-    return () => wavesurfer.destroy();
-  }, [fileUrl]);
-
-  const onReady = (ws) => {
-    // setWavesurfer(ws);
+  const onReady = (ws: WaveSurfer) => {
+    setWavesurfer(ws);
     setIsPlaying(false);
   };
 
   const onPlayPause = () => {
-    setIsPlaying((prev) => !prev);
-    return wavesurfer && wavesurfer.playPause();
+    if (wavesurfer) {
+      wavesurfer.playPause();
+    }
   };
 
   return (
@@ -76,31 +58,33 @@ function Page() {
         </div>
 
         <div
-          className="h-9/12 flex items-center justify-center"
-          ref={waveformRef}
+          className="h-9/12 flex flex-col-reverse items-center justify-center w-full"
+          // ref={waveformContainerRef}
         >
-          <button onClick={onPlayPause}>{isPlaying ? "Pause" : "Play"}</button>
-          {/* <div className="font-bold ">
-            {fileUrl ? (
+          <div className="flex flex-col items-center justify-center gap-4">
+            {fileUrl && (
               <>
                 <WavesurferPlayer
                   height={70}
                   width="35vw"
                   waveColor="green"
                   dragToSeek
+                  normalize
                   url={fileUrl}
                   onReady={onReady}
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
                 />
 
-                <button onClick={onPlayPause}>
+                <button
+                  onClick={onPlayPause}
+                  className="bg-green-700 px-2 py-1 rounded-md cursor-pointer hover:bg-green-800"
+                >
                   {isPlaying ? "Pause" : "Play"}
                 </button>
               </>
-            ) : // "Generated speech will apear here"
-            null}
-          </div> */}
+            )}
+          </div>
         </div>
         <div className="mx-14 rounded-2xl flex flex-col  mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
           <form
@@ -134,4 +118,10 @@ function Page() {
   );
 }
 
-export default Page;
+// function Page() {
+//   return <Suspense fallback={<div>loading...</div>}>
+//     <PageContent />
+//   </Suspense>;
+// }
+
+// export default Page;
