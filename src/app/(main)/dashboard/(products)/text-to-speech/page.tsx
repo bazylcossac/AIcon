@@ -3,28 +3,14 @@ import React, { useReducer, useState } from "react";
 import { GrStorage } from "react-icons/gr";
 import Link from "next/link";
 import TTSSettings from "@/components/text_to_speech/TTSSettings";
-import { ActionType, initalArgs, InitialType } from "@/lib/types";
+import { initalArgs } from "@/lib/types";
 import { TSSOpenAIRequest } from "@/actions/actions";
 import { useSession } from "next-auth/react";
 import WavesurferPlayer from "@wavesurfer/react";
 import WaveSurfer from "wavesurfer.js";
-
-function reducer(state: InitialType, action: ActionType): InitialType {
-  switch (action.type) {
-    case "SET_MODEL":
-      return { ...state, model: action.payload };
-    case "SET_INSTRUCTIONS":
-      return { ...state, instructions: action.payload };
-    case "SET_VOICE":
-      return { ...state, voice: action.payload };
-    case "SET_SPEED":
-      return { ...state, speed: action.payload };
-    case "SET_FORMAT":
-      return { ...state, responseFormat: action.payload };
-    case "SET_MESSAGE":
-      return { ...state, message: action.payload };
-  }
-}
+import { checkIfValid } from "@/lib/functions/functions";
+import { toast } from "sonner";
+import { reducer } from "@/lib/utils";
 
 export default function PageContent() {
   const userId = useSession().data?.user?.id;
@@ -32,6 +18,7 @@ export default function PageContent() {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
+  const [generatingVoice, setGeneratingVoice] = useState(false);
 
   const onReady = (ws: WaveSurfer) => {
     setWavesurfer(ws);
@@ -57,12 +44,9 @@ export default function PageContent() {
           </div>
         </div>
 
-        <div
-          className="h-9/12 flex flex-col-reverse items-center justify-center w-full"
-          // ref={waveformContainerRef}
-        >
+        <div className="h-9/12 flex flex-col-reverse items-center justify-center w-full">
           <div className="flex flex-col items-center justify-center gap-4">
-            {fileUrl && (
+            {fileUrl && !generatingVoice && (
               <>
                 <WavesurferPlayer
                   height={70}
@@ -89,14 +73,23 @@ export default function PageContent() {
         <div className="mx-14 rounded-2xl flex flex-col  mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
           <form
             action={async () => {
+              const errArr = checkIfValid(state);
+              if (errArr.length > 0) {
+                errArr.forEach((error) => {
+                  toast(error);
+                });
+              }
+              setGeneratingVoice(true);
               const fileUrl = await TSSOpenAIRequest(state, userId);
               setFileUrl(fileUrl);
+              setGeneratingVoice(false);
             }}
           >
             <textarea
               onChange={(e) =>
                 dispatch({ type: "SET_MESSAGE", payload: e.target.value })
               }
+              value={state.message}
               className="w-full p-4 rounded-2xl resize-none outline-none custom-scrollbar"
               placeholder="Enter your message..."
             ></textarea>
@@ -117,11 +110,3 @@ export default function PageContent() {
     </section>
   );
 }
-
-// function Page() {
-//   return <Suspense fallback={<div>loading...</div>}>
-//     <PageContent />
-//   </Suspense>;
-// }
-
-// export default Page;
