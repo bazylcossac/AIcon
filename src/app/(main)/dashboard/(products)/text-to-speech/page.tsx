@@ -31,6 +31,7 @@ export default function PageContent() {
     }
   };
 
+  console.log(generatingVoice);
   return (
     <section className="h-full w-full flex">
       <div className="flex-1 flex-col justify-between">
@@ -68,21 +69,29 @@ export default function PageContent() {
                 </button>
               </>
             )}
+            {generatingVoice && (
+              <p className="text-lg animate-pulse text-white/30">
+                generating...
+              </p>
+            )}
           </div>
         </div>
         <div className="mx-14 rounded-2xl flex flex-col  mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
           <form
-            action={async () => {
+            onSubmit={async (e) => {
+              e.preventDefault();
               const errArr = checkIfValid(state);
               if (errArr.length > 0) {
                 errArr.forEach((error) => {
                   toast(error);
                 });
+                return;
+              } else {
+                setGeneratingVoice(true);
+                const fileUrl = await TSSOpenAIRequest(state, userId);
+                setFileUrl(fileUrl);
+                setGeneratingVoice(false);
               }
-              setGeneratingVoice(true);
-              const fileUrl = await TSSOpenAIRequest(state, userId);
-              setFileUrl(fileUrl);
-              setGeneratingVoice(false);
             }}
           >
             <textarea
