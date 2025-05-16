@@ -36,6 +36,7 @@ function MobileNavbar() {
               <ul className="flex flex-col [&>*]:text-sm [&>*]:py-1.75 [&>*]:hover:text-white [&>*]:hover:bg-neutral-700 [&>*]:rounded-md [&>*]:px-4 [&>*]:transition [&>*]:cursor-pointer">
                 <Link
                   href="/dashboard"
+                  onClick={() => setOpen(false)}
                   className={cn("text-white/70", {
                     "bg-neutral-700 text-white": pathName === "/dashboard",
                   })}
@@ -50,23 +51,36 @@ function MobileNavbar() {
               </h2>
               <ul className="flex flex-col [&>*]:m-0.25 [&>*]:text-sm [&>*]:py-1.75 [&>*]:hover:text-white [&>*]:hover:bg-neutral-700 [&>*]:rounded-md [&>*]:px-4 [&>*]:transition [&>*]:cursor-pointer">
                 <Link
-                  href="/dashboard/icons"
+                  onClick={() => setOpen(false)}
+                  href="/dashboard/images"
                   className={cn("text-white/70", {
                     "bg-neutral-700 text-white":
-                      pathName === "/dashboard/icons",
+                      pathName === "/dashboard/images",
                   })}
                 >
-                  Icons
+                  Images
                 </Link>
 
                 <Link
+                  onClick={() => setOpen(false)}
+                  href="/dashboard/speech-to-text"
+                  className={cn("text-white/70", {
+                    "bg-neutral-700 text-white":
+                      pathName === "/dashboard/speech-to-text",
+                  })}
+                >
+                  Speech To Text
+                </Link>
+
+                <Link
+                  onClick={() => setOpen(false)}
                   href="/dashboard/text-to-speech"
                   className={cn("text-white/70 ", {
                     "bg-neutral-700 text-white":
                       pathName === "/dashboard/text-to-speech",
                   })}
                 >
-                  Text to Speech
+                  Text To Speech
                 </Link>
               </ul>
             </div>
@@ -76,6 +90,7 @@ function MobileNavbar() {
               </h2>
               <ul className="flex flex-col [&>*]:m-0.25 [&>*]:text-sm [&>*]:py-1.75 [&>*]:hover:text-white [&>*]:hover:bg-neutral-700 [&>*]:rounded-md [&>*]:px-4 [&>*]:transition [&>*]:cursor-pointer">
                 <Link
+                  onClick={() => setOpen(false)}
                   href="/dashboard/storage"
                   className={cn("text-white/70", {
                     "bg-neutral-700 text-white":
@@ -92,6 +107,7 @@ function MobileNavbar() {
               </h2>
               <ul className="flex flex-col [&>*]:m-0.25 [&>*]:text-white/70 [&>*]:text-sm [&>*]:py-1.75 [&>*]:hover:text-white [&>*]:hover:bg-neutral-700 [&>*]:rounded-md [&>*]:px-4 [&>*]:transition [&>*]:cursor-pointer">
                 <Link
+                  onClick={() => setOpen(false)}
                   href="/dashboard/tokens"
                   className={cn("text-white/70 ", {
                     "bg-neutral-700 text-white":
@@ -102,6 +118,7 @@ function MobileNavbar() {
                 </Link>
 
                 <Link
+                  onClick={() => setOpen(false)}
                   href="/dashboard/costs"
                   className={cn("text-white/70 ", {
                     "bg-neutral-700 text-white":

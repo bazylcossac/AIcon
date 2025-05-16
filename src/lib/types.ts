@@ -1,8 +1,8 @@
 export const initalArgs = {
-  model: "",
+  model: "gpt-4o-mini-tts",
   instructions: "",
-  voice: "",
-  responseFormat: "" as "mp3" | "wav",
+  voice: "ash",
+  responseFormat: "mp3" as "mp3" | "wav",
   message: "",
 };
 

@@ -19,10 +19,11 @@ function TextToSpeechSettings({
 }) {
   return (
     <>
-      <div className="flex flex-col">
+      <div className="">
         <p className="mb-2">Model</p>
         <Select
           required
+          value={state.model}
           onValueChange={(value) =>
             dispatch({ type: "SET_MODEL", payload: value })
           }
@@ -50,6 +51,7 @@ function TextToSpeechSettings({
         <p className="mb-2">Voice</p>
         <Select
           required
+          value={state.voice}
           onValueChange={(value) =>
             dispatch({ type: "SET_VOICE", payload: value })
           }
@@ -75,6 +77,7 @@ function TextToSpeechSettings({
       <div>
         <p className="mb-2">Response format</p>
         <Select
+          value={state.responseFormat}
           required
           onValueChange={(value) =>
             dispatch({ type: "SET_FORMAT", payload: value as "mp3" | "wav" })

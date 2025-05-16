@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 
 import React, { useState } from "react";
-import { RxHamburgerMenu } from "react-icons/rx";
+import { IoMdSettings } from "react-icons/io";
 import TextToSpeechSettings from "./TTSSettings";
 import { ActionType, InitialType } from "@/lib/types";
 
@@ -25,9 +25,9 @@ function TTSMobileSettings({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <RxHamburgerMenu onClick={() => setOpen(true)} />
+        <IoMdSettings onClick={() => setOpen(true)} className="text-sm" />
       </DialogTrigger>
-      <DialogContent className="bg-black">
+      <DialogContent className="bg-black border-1 border-white/50">
         <DialogHeader>
           <DialogTitle></DialogTitle>
           <DialogDescription></DialogDescription>
