@@ -33,7 +33,7 @@ export async function TSSOpenAIRequest(
     speed: speed,
     response_format: responseFormat,
   });
-
+  console.log(response.error);
   const buffer = await response.arrayBuffer();
 
   try {
