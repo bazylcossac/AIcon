@@ -23,10 +23,11 @@ export const files = pgTable("file", {
   id: text("id")
     .$defaultFn(() => crypto.randomUUID())
     .primaryKey(),
+  url: text("url").notNull(),
+  type: text("type").notNull(),
   authorId: text("authorId")
     .references(() => users.id)
     .notNull(),
-  url: text("url").notNull(),
 });
 
 // auth shemas

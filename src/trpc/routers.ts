@@ -11,14 +11,20 @@ export const appRouter = router({
     return await db.query.users.findMany();
   }),
   uploadFile: protectedProcedure
-    .input(z.object({ authorId: z.string().uuid(), url: z.string().url() }))
+    .input(
+      z.object({
+        authorId: z.string().uuid(),
+        url: z.string().url(),
+        type: z.string(),
+      })
+    )
     .mutation(async (opts) => {
       const { authorId, url } = opts.input;
       if (!url) {
         throw new Error("No url provided");
       }
       try {
-        await db.insert(schema.files).values({ authorId, url });
+        await db.insert(schema.files).values({ authorId, url, type });
       } catch (err) {
         const error = err as Error;
         throw new Error(error.message);
