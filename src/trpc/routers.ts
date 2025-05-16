@@ -1,4 +1,4 @@
-import { protectedProcedure, publicProcedure, router } from "./init";
+import { protectedProcedure, router } from "./init";
 import * as schema from "../db/schema";
 import { drizzle } from "drizzle-orm/neon-http";
 import { z } from "zod";
@@ -19,7 +19,7 @@ export const appRouter = router({
       })
     )
     .mutation(async (opts) => {
-      const { authorId, url } = opts.input;
+      const { authorId, url, type } = opts.input;
       if (!url) {
         throw new Error("No url provided");
       }

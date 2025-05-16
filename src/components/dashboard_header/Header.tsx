@@ -15,11 +15,11 @@ async function Header({ session }: { session: Session }) {
         <div className="flex flex-row items-center gap-4">
           <Link
             href="/dashboard/tokens"
-            className="text-[11px] bg-white px-2 py-1 rounded-md text-black font-semibold hover:bg-white/70 transition"
+            className="text-[11px] bg-white px-2 py-1 rounded-md text-black font-semibold hover:bg-white/70 transition hidden md:inline-block "
           >
             Buy Tokens
           </Link>
-          <div className="text-xs">
+          <div className="text-xs ">
             <span className="text-sm font-bold mx-1">12</span>Tokens
           </div>
           <p className="font-bold mx-1 text-white/50">/</p>

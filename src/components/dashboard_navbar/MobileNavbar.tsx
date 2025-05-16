@@ -27,7 +27,7 @@ function MobileNavbar() {
           <SheetTitle></SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
-        <nav className="min-w-[200px] mt-2 ">
+        <nav className="min-w-[200px] mt-2 sm:text-3xl">
           <div className="mx-1.75">
             <div className="mb-6">
               <h2 className="text-xs font-bold tracking-widest mb-2 mx-4">

@@ -9,7 +9,7 @@ async function layout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
   return (
-    <div className="w-full h-full overflow-y-hidden">
+    <div className="w-full h-full ">
       <div className="w-full h-14">
         <Header session={session!} />
       </div>

@@ -11,6 +11,7 @@ import WaveSurfer from "wavesurfer.js";
 import { checkIfValid } from "@/lib/functions/functions";
 import { toast } from "sonner";
 import { reducer } from "@/lib/utils";
+import useMediaQuery from "@/lib/hooks/useMediaQuery";
 
 export default function PageContent() {
   const userId = useSession().data?.user?.id;
@@ -19,6 +20,7 @@ export default function PageContent() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const [generatingVoice, setGeneratingVoice] = useState(false);
+  const matches = useMediaQuery();
 
   const onReady = (ws: WaveSurfer) => {
     setWavesurfer(ws);
@@ -32,8 +34,8 @@ export default function PageContent() {
   };
 
   return (
-    <section className="h-full w-full flex">
-      <div className="flex-1 flex-col justify-between">
+    <section className="h-full w-full flex overflow-y-hidden ">
+      <div className="flex-1 flex-col justify-between ">
         <div className="flex items-center justify-between py-4 border-b-1 border-black px-4">
           <p className="text-lg font-bold">Text to speech</p>
           <div className="flex flex-row items-center gap-1 text-white/70 hover:text-white transition">
@@ -51,7 +53,7 @@ export default function PageContent() {
                 <WavesurferPlayer
                   height={70}
                   width="35vw"
-                  waveColor="green"
+                  waveColor="#016630"
                   dragToSeek
                   normalize
                   url={fileUrl}
@@ -75,7 +77,7 @@ export default function PageContent() {
             )}
           </div>
         </div>
-        <div className="mx-14 rounded-2xl flex flex-col  mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
+        <div className="md:mx-14 mx-4 rounded-2xl flex flex-col mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
           <form
             onSubmit={async (e) => {
               e.preventDefault();
@@ -112,9 +114,11 @@ export default function PageContent() {
           </form>
         </div>
       </div>
-      <div className="flex flex-col md:min-w-[300px] border-l border-black gap-8 p-6">
-        <TTSSettings state={state} dispatch={dispatch} />
-      </div>
+      {matches && (
+        <div className="flex flex-col md:min-w-[300px] border-l border-black gap-8 p-6 ">
+          <TTSSettings state={state} dispatch={dispatch} />
+        </div>
+      )}
     </section>
   );
 }
