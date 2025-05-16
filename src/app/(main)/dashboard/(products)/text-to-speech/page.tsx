@@ -12,6 +12,7 @@ import { checkIfValid } from "@/lib/functions/functions";
 import { toast } from "sonner";
 import { reducer } from "@/lib/utils";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
+import TTSMobileSettings from "@/components/text_to_speech/TTSMobileSettings";
 
 export default function PageContent() {
   const userId = useSession().data?.user?.id;
@@ -34,10 +35,15 @@ export default function PageContent() {
   };
 
   return (
-    <section className="h-full w-full flex overflow-y-hidden ">
+    <section className="h-full w-full flex overflow-y-hidden">
       <div className="flex-1 flex-col justify-between ">
         <div className="flex items-center justify-between py-4 border-b-1 border-black px-4">
-          <p className="text-lg font-bold">Text to speech</p>
+          <div className="flex flex-row items-center gap-2">
+            {!matches && (
+              <TTSMobileSettings state={state} dispatch={dispatch} />
+            )}
+            <p className="text-lg font-bold">Text to speech</p>
+          </div>
           <div className="flex flex-row items-center gap-1 text-white/70 hover:text-white transition">
             <GrStorage className="text-sm" />
             <Link href="/dashboard/storage" className="text-xs ">
@@ -46,7 +52,7 @@ export default function PageContent() {
           </div>
         </div>
 
-        <div className="h-9/12 flex flex-col-reverse items-center justify-center w-full">
+        <div className="h-9/12 flex flex-col-reverse items-center justify-center w-full overflow-y-hidden">
           <div className="flex flex-col items-center justify-center gap-4">
             {fileUrl && !generatingVoice && (
               <>
@@ -77,7 +83,7 @@ export default function PageContent() {
             )}
           </div>
         </div>
-        <div className="md:mx-14 mx-4 rounded-2xl flex flex-col mb-10 border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
+        <div className="md:mx-14 mx-4 rounded-2xl flex flex-col border-1 border-white/50 focus:border-green-300 focus:border-2 transition">
           <form
             onSubmit={async (e) => {
               e.preventDefault();
@@ -100,7 +106,7 @@ export default function PageContent() {
                 dispatch({ type: "SET_MESSAGE", payload: e.target.value })
               }
               value={state.message}
-              className="w-full p-4 rounded-2xl resize-none outline-none custom-scrollbar"
+              className="w-full p-4 rounded-2xl resize-none outline-none custom-scrollbar absolute"
               placeholder="Enter your message..."
             ></textarea>
             <div className="flex justify-end m-2">
