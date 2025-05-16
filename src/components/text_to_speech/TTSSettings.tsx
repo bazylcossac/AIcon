@@ -82,7 +82,7 @@ function TextToSpeechSettings({
           step={0.25}
           className=""
           onValueChange={(value) =>
-            dispatch({ type: "SET_SPEED", payload: value })
+            dispatch({ type: "SET_SPEED", payload: value[0] })
           }
         />
       </div>
@@ -91,7 +91,7 @@ function TextToSpeechSettings({
         <Select
           required
           onValueChange={(value) =>
-            dispatch({ type: "SET_FORMAT", payload: value })
+            dispatch({ type: "SET_FORMAT", payload: value as "mp3" | "wav" })
           }
         >
           <SelectTrigger className="w-[180px]  border-white/50">

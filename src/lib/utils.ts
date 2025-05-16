@@ -19,7 +19,7 @@ export function reducer(state: InitialType, action: ActionType): InitialType {
     case "SET_VOICE":
       return { ...state, voice: action.payload };
     case "SET_SPEED":
-      return { ...state, speed: action.payload[0] };
+      return { ...state, speed: action.payload };
     case "SET_FORMAT":
       return { ...state, responseFormat: action.payload };
     case "SET_MESSAGE":

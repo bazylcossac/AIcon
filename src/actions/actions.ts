@@ -30,7 +30,7 @@ export async function TSSOpenAIRequest(
     input: message,
     instructions,
     voice,
-    speed: speed[0],
+    speed: speed,
     response_format: responseFormat,
   });
 

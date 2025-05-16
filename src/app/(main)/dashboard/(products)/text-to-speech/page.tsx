@@ -31,7 +31,6 @@ export default function PageContent() {
     }
   };
 
-  console.log(generatingVoice);
   return (
     <section className="h-full w-full flex">
       <div className="flex-1 flex-col justify-between">
