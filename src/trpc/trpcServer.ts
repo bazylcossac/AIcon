@@ -1,7 +1,7 @@
+import { Session } from "next-auth";
+import createContext from "./init";
 import { appRouter } from "./routers";
-import { createContext } from "./init";
 
-export async function createTrpcServer() {
-  const context = await createContext();
+export async function createTrpcServer(context: { session: Session | null }) {
   return appRouter.createCaller(context);
 }

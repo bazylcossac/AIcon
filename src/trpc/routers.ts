@@ -24,6 +24,19 @@ export const appRouter = router({
         throw new Error(error.message);
       }
     }),
+
+  getAllUserFiles: protectedProcedure
+    .input(z.string().uuid())
+    .query(async (otps) => {
+      try {
+        return await db
+          .select()
+          .from(schema.files)
+          .where(eq(schema.files.authorId, otps.input));
+      } catch {
+        throw new TRPCError({ code: "SERVICE_UNAVAILABLE" });
+      }
+    }),
   cleanupUserSession: protectedProcedure
     .input(z.string().uuid())
     .mutation(async (opts) => {

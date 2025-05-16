@@ -5,11 +5,13 @@ import { createTrpcServer } from "@/trpc/trpcServer";
 import { utapi } from "@/lib/uploadThing/uploadthing";
 import OpenAI from "openai";
 import { UploadThingError } from "uploadthing/server";
+import { auth } from "@/auth";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET_KEY });
 
 export async function cleanupSession(sessionToken: string) {
-  const trpcServer = await createTrpcServer();
+  const session = await auth();
+  const trpcServer = await createTrpcServer({ session });
   await trpcServer.cleanupUserSession(sessionToken);
 }
 
@@ -17,23 +19,22 @@ export async function TSSOpenAIRequest(
   settings: InitialType,
   userId: string | undefined
 ) {
-  if (!userId) {
+  const session = await auth();
+  if (!userId || !session?.sessionToken) {
     throw new Error("Unauthorized");
   }
-  const trpcServer = await createTrpcServer();
+  const trpcServer = await createTrpcServer({ session });
   const speechFileName = `speech_${crypto.randomUUID()}.mp3`;
-  const { model, instructions, voice, speed, responseFormat, message } =
-    settings;
+  const { model, instructions, voice, responseFormat, message } = settings;
 
   const response = await openai.audio.speech.create({
     model,
     input: message,
     instructions,
     voice,
-    speed: speed,
     response_format: responseFormat,
   });
-  console.log(response.error);
+
   const buffer = await response.arrayBuffer();
 
   try {
@@ -42,7 +43,7 @@ export async function TSSOpenAIRequest(
     const file = new File([blob], speechFileName, {
       type: `audio/${responseFormat}`,
     });
-
+    // uploads to uploadThing
     const uploaded = await utapi.uploadFiles([file]);
     if (!uploaded) {
       throw new Error("Failed to Upload");

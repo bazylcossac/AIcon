@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
+
 import { ActionType, InitialType } from "@/lib/types";
 
 function TextToSpeechSettings({
@@ -71,20 +71,6 @@ function TextToSpeechSettings({
             <SelectItem value="verse">Verse</SelectItem>
           </SelectContent>
         </Select>
-      </div>
-      <div>
-        <p className="mb-2">Speed</p>
-        <p className="text-sm text-white/60">{state.speed}x</p>
-        <Slider
-          defaultValue={[1.0]}
-          max={4}
-          min={0.25}
-          step={0.25}
-          className=""
-          onValueChange={(value) =>
-            dispatch({ type: "SET_SPEED", payload: value[0] })
-          }
-        />
       </div>
       <div>
         <p className="mb-2">Response format</p>
