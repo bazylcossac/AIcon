@@ -51,9 +51,15 @@ export async function TSSOpenAIRequest(
     const url = uploaded[0]!.data!.ufsUrl;
 
     // uploads to db
-    await trpcServer.uploadFile({ authorId: userId, url, type: `audio/${responseFormat}` });
+    await trpcServer.uploadFile({
+      authorId: userId,
+      url,
+      type: `audio/${responseFormat}`,
+    });
     return url;
   } catch (error) {
     throw new UploadThingError(`File Upload Error | ${error}`);
   }
 }
+
+export async function ImageGenOpenAIRequest(prompt: string, userId: string) {}

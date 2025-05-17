@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+
 import SearchInput from "./SearchInput";
 import * as motion from "motion/react-client";
 import { usePathname } from "next/navigation";
@@ -85,6 +86,7 @@ function Navbar({ session }: { session: Session }) {
                 >
                   Text to Speech
                 </Link>
+
                 <Link
                   href="/dashboard/speech-to-text"
                   className={cn("text-white/70", {

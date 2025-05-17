@@ -1,5 +1,5 @@
 "use client";
-import React, { useReducer, useState } from "react";
+import React, { FormEvent, useReducer, useState } from "react";
 import { GrStorage } from "react-icons/gr";
 import Link from "next/link";
 import TTSSettings from "@/components/text_to_speech/TTSSettings";
@@ -31,6 +31,23 @@ export default function TTSPage() {
   const onPlayPause = () => {
     if (wavesurfer) {
       wavesurfer.playPause();
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const errArr = checkIfValid(state);
+    if (errArr.length > 0) {
+      errArr.forEach((error) => {
+        toast(error);
+      });
+      return;
+    } else {
+      setGeneratingVoice(true);
+      dispatch({ type: "SET_MESSAGE", payload: "" });
+      const fileUrl = await TSSOpenAIRequest(state, userId);
+      setFileUrl(fileUrl);
+      setGeneratingVoice(false);
     }
   };
 
@@ -97,31 +114,14 @@ export default function TTSPage() {
             </div>
           </div>
 
-          <div className="w-full md:w-11/12 mx-auto mb-4 rounded-2xl border-1 border-white/50 focus-within:border-green-300 focus-within:border-2 transition relative">
-            <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                const errArr = checkIfValid(state);
-                if (errArr.length > 0) {
-                  errArr.forEach((error) => {
-                    toast(error);
-                  });
-                  return;
-                } else {
-                  setGeneratingVoice(true);
-                  dispatch({ type: "SET_MESSAGE", payload: "" });
-                  const fileUrl = await TSSOpenAIRequest(state, userId);
-                  setFileUrl(fileUrl);
-                  setGeneratingVoice(false);
-                }
-              }}
-            >
+          <div className="w-11/12 md:h-36 md:w-8/12 mx-auto mb-8 rounded-2xl border-1 border-white/50 focus-within:border-green-300 focus-within:border-2 transition relative">
+            <form onSubmit={async (e) => handleSubmit(e)}>
               <textarea
                 onChange={(e) =>
                   dispatch({ type: "SET_MESSAGE", payload: e.target.value })
                 }
                 value={state.message}
-                className="p-4 rounded-2xl resize-none outline-none custom-scrollbar text-xs md:text-md w-11/12"
+                className="p-6 rounded-2xl resize-none outline-none custom-scrollbar text-sm  md:text-md w-11/12 text-md placeholder:text-white/30"
                 placeholder="Enter your message..."
               ></textarea>
               <div className="flex justify-end m-2 absolute right-0 bottom-0">
@@ -133,7 +133,6 @@ export default function TTSPage() {
                 </button>
               </div>
             </form>
-            {/* </div> */}
           </div>
         </div>
       </div>
