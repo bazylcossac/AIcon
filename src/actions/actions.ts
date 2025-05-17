@@ -6,6 +6,7 @@ import { utapi } from "@/lib/uploadThing/uploadthing";
 import OpenAI from "openai";
 import { UploadThingError } from "uploadthing/server";
 import { auth } from "@/auth";
+import { base64ToUInt } from "@/lib/functions/functions";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET_KEY });
 
@@ -84,10 +85,34 @@ export async function ImageGenOpenAIRequest(
     });
 
     if (!response.data) {
-      throw new Error(`Error | Failed to generate images`);
+      throw new Error(`Error | Failed to generate image`);
     }
 
     const image_base64 = response.data[0].b64_json;
+    if (!image_base64) {
+      throw new Error("Failed to generate image");
+    }
+    const uintArr = base64ToUInt(image_base64);
+
+    const blob = new Blob([uintArr], { type: "image/png" });
+
+    const fileName = `image-${crypto.randomUUID()}.png`;
+
+    const file = new File([blob], fileName, { type: "image/png" });
+
+    const uploaded = await utapi.uploadFiles([file]);
+
+    if (!uploaded) {
+      throw new Error("Failed to Upload");
+    }
+    const url = uploaded[0]!.data!.ufsUrl;
+
+    // uploads to db
+    await trpcServer.uploadFile({
+      authorId: userId,
+      url,
+      type: `image/png`,
+    });
   } catch (err) {
     const error = err as Error;
     throw new Error(`Error while generating image | ${error.message}`);

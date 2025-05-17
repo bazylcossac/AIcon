@@ -1,3 +1,4 @@
+import { base } from "motion/react-client";
 import { InitialType } from "../types";
 
 export function checkIfValid(state: InitialType) {
@@ -12,4 +13,17 @@ export function checkIfValid(state: InitialType) {
   }
 
   return errorArr;
+}
+
+export function base64ToUInt(base64: string) {
+  const byteCharacters = atob(base64);
+  const byteArr = [];
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteArr.push(byteCharacters.charCodeAt(i));
+  }
+
+  const uintArr = new Uint8Array(byteArr);
+
+  return uintArr;
 }
