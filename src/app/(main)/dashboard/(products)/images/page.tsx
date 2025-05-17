@@ -25,13 +25,13 @@ function ImagesPage() {
             </div>
           </div>
         </div>
-        <div className="grid w-full  sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 ">
+        {/* <div className="grid w-full  sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 ">
           {emptyArr.map((el, index) => (
             <div key={index} className="size-92 border-2 bg-red-300">
               d
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

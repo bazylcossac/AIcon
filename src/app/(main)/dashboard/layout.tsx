@@ -1,9 +1,16 @@
-import React from "react";
+export const experimental_ppr = true;
+import React, { Suspense } from "react";
 import { SessionProvider } from "next-auth/react";
 import dynamic from "next/dynamic";
-const Header = dynamic(() => import("@/components/dashboard_header/Header"));
-const Navbar = dynamic(() => import("@/components/dashboard_navbar/Navbar"));
+const Header = dynamic(() => import("@/components/dashboard_header/Header"), {
+  loading: () => <p></p>,
+});
+const Navbar = dynamic(() => import("@/components/dashboard_navbar/Navbar"), {
+  loading: () => <p></p>,
+});
+
 import { auth } from "@/auth";
+import Loading from "@/components/Loading";
 
 async function layout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -18,11 +25,13 @@ async function layout({ children }: { children: React.ReactNode }) {
         <div>
           <Navbar session={session!} />
         </div>
-        <SessionProvider>
-          <div className="bg-neutral-800 rounded-lg w-full h-full m-2 ">
-            {children}
-          </div>
-        </SessionProvider>
+        <Suspense fallback={<Loading />}>
+          <SessionProvider>
+            <div className="bg-neutral-800 rounded-lg w-full h-full m-2 ">
+              {children}
+            </div>
+          </SessionProvider>
+        </Suspense>
       </div>
     </div>
   );
