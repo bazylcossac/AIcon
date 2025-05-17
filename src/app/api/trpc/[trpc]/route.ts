@@ -7,7 +7,7 @@ const handler = async (req: Request) => {
   fetchRequestHandler({
     endpoint: "/api/trpc",
     req,
-  router: appRouter,
+    router: appRouter,
     createContext: () => context,
   });
 };

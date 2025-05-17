@@ -8,7 +8,6 @@ function useShortcutOpenInput(callback: () => void) {
       const systemKey = system.includes("mac") ? e.metaKey : e.ctrlKey;
 
       if (systemKey && e.key === "k") {
-        console.log("WCISNIETE");
         callback();
       }
     };

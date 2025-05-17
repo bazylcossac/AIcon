@@ -27,7 +27,7 @@ async function layout({ children }: { children: React.ReactNode }) {
         </div>
         <Suspense fallback={<Loading />}>
           <SessionProvider>
-            <div className="bg-neutral-800 rounded-lg w-full h-full m-2 ">
+            <div className="bg-neutral-800 rounded-lg w-full h-full m-2  ">
               {children}
             </div>
           </SessionProvider>

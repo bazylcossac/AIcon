@@ -40,7 +40,7 @@ export default function TTSPage() {
         <div className="flex items-center justify-between py-4 border-b-1 border-black px-4  ">
           {!matches && (
             // mobile
-            <div className="flex flex-row items-center justify-between gap-2 md:hidden w-full">
+            <div className="flex flex-row items-center justify-between gap-2 md:hidden w-full text-white/70">
               <div className="flex items-center gap-1">
                 <TTSMobileSettings state={state} dispatch={dispatch} />
                 <p className="text-sm font-bold">Text to speech</p>
@@ -97,7 +97,7 @@ export default function TTSPage() {
             </div>
           </div>
 
-          <div className="w-full md:w-11/12 mx-auto mb-4 rounded-2xl border-1 border-white/50 focus-within:border-green-300 focus-within:border-2 transition">
+          <div className="w-full md:w-11/12 mx-auto mb-4 rounded-2xl border-1 border-white/50 focus-within:border-green-300 focus-within:border-2 transition relative">
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
@@ -109,6 +109,7 @@ export default function TTSPage() {
                   return;
                 } else {
                   setGeneratingVoice(true);
+                  dispatch({ type: "SET_MESSAGE", payload: "" });
                   const fileUrl = await TSSOpenAIRequest(state, userId);
                   setFileUrl(fileUrl);
                   setGeneratingVoice(false);
@@ -120,12 +121,12 @@ export default function TTSPage() {
                   dispatch({ type: "SET_MESSAGE", payload: e.target.value })
                 }
                 value={state.message}
-                className="w-full p-4 rounded-2xl resize-none outline-none custom-scrollbar "
+                className="p-4 rounded-2xl resize-none outline-none custom-scrollbar text-xs md:text-md w-11/12"
                 placeholder="Enter your message..."
               ></textarea>
-              <div className="flex justify-end m-2">
+              <div className="flex justify-end m-2 absolute right-0 bottom-0">
                 <button
-                  className="bg-green-700 p-2 rounded-md hover:bg-green-800 transition cursor-pointer"
+                  className="bg-green-700 text-xs p-1 md:p-2 text-md rounded-md hover:bg-green-800 transition cursor-pointer "
                   type="submit"
                 >
                   Generate
