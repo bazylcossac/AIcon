@@ -6,21 +6,19 @@ import TTSSettings from "@/components/text_to_speech/TTSSettings";
 import { initalArgs } from "@/lib/types";
 import { TSSOpenAIRequest } from "@/actions/actions";
 import { useSession } from "next-auth/react";
-import WavesurferPlayer from "@wavesurfer/react";
-import WaveSurfer from "wavesurfer.js";
+
 import { checkIfValid } from "@/lib/functions/functions";
 import { toast } from "sonner";
 import { reducer } from "@/lib/utils";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
 import TTSMobileSettings from "@/components/text_to_speech/TTSMobileSettings";
 import { IoMdDownload } from "react-icons/io";
+import WaveForm from "@/components/text_to_speech/WaveForm";
 
 export default function TTSPage() {
   const matches = useMediaQuery();
   const userId = useSession().data?.user?.id;
   const [state, dispatch] = useReducer(reducer, initalArgs);
-  const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const [bufferData, setBufferData] = useState<{
     buffer: ArrayBuffer;
@@ -38,17 +36,6 @@ export default function TTSPage() {
       setDownloadUrl(url);
     }
   }, [bufferData]);
-
-  const onReady = (ws: WaveSurfer) => {
-    setWavesurfer(ws);
-    setIsPlaying(false);
-  };
-
-  const onPlayPause = () => {
-    if (wavesurfer) {
-      wavesurfer.playPause();
-    }
-  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,26 +104,7 @@ export default function TTSPage() {
           <div className="flex flex-1 items-center justify-center ">
             <div className="flex flex-col items-center justify-center gap-4">
               {fileUrl && !generatingVoice && (
-                <>
-                  <WavesurferPlayer
-                    height={70}
-                    width={matches ? "35vw" : "70vw"}
-                    waveColor="#016630"
-                    dragToSeek
-                    normalize
-                    url={fileUrl}
-                    onReady={onReady}
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                  />
-
-                  <button
-                    onClick={onPlayPause}
-                    className="bg-green-700 px-2 py-1 rounded-md cursor-pointer hover:bg-green-800"
-                  >
-                    {isPlaying ? "Pause" : "Play"}
-                  </button>
-                </>
+                <WaveForm matches={matches} fileUrl={fileUrl} />
               )}
               {generatingVoice && (
                 <p className="text-lg animate-pulse text-white/30">
