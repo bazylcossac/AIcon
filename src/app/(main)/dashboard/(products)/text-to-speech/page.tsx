@@ -15,13 +15,13 @@ import useMediaQuery from "@/lib/hooks/useMediaQuery";
 import TTSMobileSettings from "@/components/text_to_speech/TTSMobileSettings";
 
 export default function TTSPage() {
+  const matches = useMediaQuery();
   const userId = useSession().data?.user?.id;
   const [state, dispatch] = useReducer(reducer, initalArgs);
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const [generatingVoice, setGeneratingVoice] = useState(false);
-  const matches = useMediaQuery();
 
   const onReady = (ws: WaveSurfer) => {
     setWavesurfer(ws);
@@ -37,17 +37,26 @@ export default function TTSPage() {
   return (
     <section className="h-full w-full flex">
       <div className="flex-1 flex flex-col justify-between h-full">
-        <div className="flex items-center justify-between py-4 border-b-1 border-black px-4">
+        <div className="flex items-center justify-between py-4 border-b-1 border-black px-4  ">
           {!matches && (
-            <div className="flex flex-row items-center gap-2 md:hidden">
-              <TTSMobileSettings state={state} dispatch={dispatch} />
-
-              <p className="text-lg font-bold">Text to speech</p>
+            // mobile
+            <div className="flex flex-row items-center justify-between gap-2 md:hidden w-full">
+              <div className="flex items-center gap-1">
+                <TTSMobileSettings state={state} dispatch={dispatch} />
+                <p className="text-sm font-bold">Text to speech</p>
+              </div>
+              <div className="flex items-center gap-1">
+                <GrStorage className="text-sm" />
+                <Link href="/dashboard/storage" className="text-xs ">
+                  Storage
+                </Link>
+              </div>
             </div>
           )}
-          <div className="flex flex-row items-center justify-between  w-full gap-1 text-white/70 hover:text-white transition ">
+
+          <div className="flex-row items-center justify-between w-full gap-1 text-white/70 hover:text-white transition hidden md:flex">
             <p className="text-lg font-bold">Text to speech</p>
-            <div className="flex items-center gap-1">
+            <div className="items-center gap-1 hidden md:flex">
               <GrStorage className="text-sm" />
               <Link href="/dashboard/storage" className="text-xs ">
                 Storage
@@ -87,7 +96,6 @@ export default function TTSPage() {
               )}
             </div>
           </div>
-          {/* <div className="flex w-full justify-center px-2 "> */}
 
           <div className="w-full md:w-11/12 mx-auto mb-4 rounded-2xl border-1 border-white/50 focus-within:border-green-300 focus-within:border-2 transition">
             <form
@@ -128,11 +136,10 @@ export default function TTSPage() {
           </div>
         </div>
       </div>
-      {matches && (
-        <div className="flex flex-col md:min-w-[300px] border-l border-black gap-8 p-6">
-          <TTSSettings state={state} dispatch={dispatch} />
-        </div>
-      )}
+
+      <div className="flex-col md:min-w-[300px] border-l border-black gap-8 p-6 hidden md:flex">
+        <TTSSettings state={state} dispatch={dispatch} />
+      </div>
     </section>
   );
 }
