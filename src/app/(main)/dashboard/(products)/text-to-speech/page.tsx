@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useReducer, useState } from "react";
+import React, { FormEvent, useEffect, useReducer, useState } from "react";
 import { GrStorage } from "react-icons/gr";
 import Link from "next/link";
 import TTSSettings from "@/components/text_to_speech/TTSSettings";
@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { reducer } from "@/lib/utils";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
 import TTSMobileSettings from "@/components/text_to_speech/TTSMobileSettings";
+import { IoMdDownload } from "react-icons/io";
 
 export default function TTSPage() {
   const matches = useMediaQuery();
@@ -21,7 +22,22 @@ export default function TTSPage() {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
+  const [bufferData, setBufferData] = useState<{
+    buffer: ArrayBuffer;
+    responseFormat: string;
+  }>();
+  const [downloadUrl, setDownloadUrl] = useState("");
   const [generatingVoice, setGeneratingVoice] = useState(false);
+
+  useEffect(() => {
+    if (bufferData) {
+      const blob = new Blob([bufferData.buffer], {
+        type: `audio/${bufferData.responseFormat}`,
+      });
+      const url = URL.createObjectURL(blob);
+      setDownloadUrl(url);
+    }
+  }, [bufferData]);
 
   const onReady = (ws: WaveSurfer) => {
     setWavesurfer(ws);
@@ -44,9 +60,12 @@ export default function TTSPage() {
       return;
     } else {
       setGeneratingVoice(true);
-      dispatch({ type: "SET_MESSAGE", payload: "" });
-      const fileUrl = await TSSOpenAIRequest(state, userId);
-      setFileUrl(fileUrl);
+      const { url, buffer, responseFormat } = await TSSOpenAIRequest(
+        state,
+        userId
+      );
+      setFileUrl(url);
+      setBufferData({ buffer, responseFormat });
       setGeneratingVoice(false);
     }
   };
@@ -82,13 +101,26 @@ export default function TTSPage() {
           </div>
         </div>
         <div className=" flex-1 flex flex-col h-full px-4 ">
+          {downloadUrl && (
+            <div className="flex justify-end text-white/50 my-3">
+              <a
+                download={`tts-${state.message
+                  .replace(/\s+/g, "-")
+                  .slice(0, 10)}`}
+                href={downloadUrl}
+              >
+                <IoMdDownload className="bg-neutral-700 text-3xl rounded-md px-2 py-1 hover:bg-neutral-900 cursor-pointer " />
+              </a>
+            </div>
+          )}
+
           <div className="flex flex-1 items-center justify-center ">
             <div className="flex flex-col items-center justify-center gap-4">
               {fileUrl && !generatingVoice && (
                 <>
                   <WavesurferPlayer
                     height={70}
-                    width="35vw"
+                    width={matches ? "35vw" : "70vw"}
                     waveColor="#016630"
                     dragToSeek
                     normalize
@@ -113,7 +145,6 @@ export default function TTSPage() {
               )}
             </div>
           </div>
-
           <div className="w-11/12 md:h-36 md:w-8/12 mx-auto mb-8 rounded-2xl border-1 border-white/50 focus-within:border-green-300 focus-within:border-2 transition relative">
             <form onSubmit={async (e) => handleSubmit(e)}>
               <textarea
@@ -123,6 +154,7 @@ export default function TTSPage() {
                 value={state.message}
                 className="p-6 rounded-2xl resize-none outline-none custom-scrollbar text-sm  md:text-md w-11/12 text-md placeholder:text-white/30"
                 placeholder="Enter your message..."
+                maxLength={250}
               ></textarea>
               <div className="flex justify-end m-2 absolute right-0 bottom-0">
                 <button

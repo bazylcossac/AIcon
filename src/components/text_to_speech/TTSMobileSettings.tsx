@@ -20,7 +20,7 @@ function TTSMobileSettings({
   state: InitialType;
   dispatch: React.ActionDispatch<[action: ActionType]>;
 }) {
-  const [open, setOpen] = useState(false);
+const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

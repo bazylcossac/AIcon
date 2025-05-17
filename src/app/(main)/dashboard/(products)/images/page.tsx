@@ -1,14 +1,30 @@
 "use client";
 import Link from "next/link";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, FormEvent } from "react";
 import { GrStorage } from "react-icons/gr";
 import { MdOutlineCleaningServices, MdAttachFile } from "react-icons/md";
 import { FaArrowUp } from "react-icons/fa6";
 import { VscSettings } from "react-icons/vsc";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { ImageGenOpenAIRequest } from "@/actions/actions";
 
 function ImagesPage() {
+  const session = useSession();
   const [imagePrompt, setImagePropmpt] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleImageGenSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (session.data?.user?.id) {
+      const prompt = imagePrompt;
+      const userId = session.data.user.id;
+      setImagePropmpt("");
+      await ImageGenOpenAIRequest(prompt, userId, 1);
+    } else {
+      redirect("/");
+    }
+  };
 
   return (
     <div className=" w-full h-full">
@@ -34,12 +50,16 @@ function ImagesPage() {
             className="w-11/12 md:w-6/12  h-34 mx-auto mt-auto mb-28 rounded-2xl bg-neutral-700 border-white/50 focus-within:border-white/30 focus-within:border-1 transition relative cursor-text"
             onClick={() => textareaRef.current?.focus()}
           >
-            <form className="relative">
+            <form
+              className="relative"
+              onSubmit={(e) => handleImageGenSubmit(e)}
+            >
               <textarea
                 ref={textareaRef}
                 className="p-4 rounded-2xl resize-none outline-none custom-scrollbar text-md  md:text-md w-11/12 "
                 placeholder="Describe what you want to see..."
                 value={imagePrompt}
+                maxLength={30}
                 onChange={(e) => setImagePropmpt(e.target.value)}
               ></textarea>
               <div className="flex justify-between  p-2 px-3 absolute -bottom-12  w-full ">

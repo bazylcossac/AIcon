@@ -5,6 +5,7 @@ import {
   primaryKey,
   timestamp,
   boolean,
+  date,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -28,6 +29,7 @@ export const files = pgTable("file", {
   authorId: text("authorId")
     .references(() => users.id)
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow(),
 });
 
 // auth shemas

@@ -43,6 +43,7 @@ export async function TSSOpenAIRequest(
     const file = new File([blob], speechFileName, {
       type: `audio/${responseFormat}`,
     });
+
     // uploads to uploadThing
     const uploaded = await utapi.uploadFiles([file]);
     if (!uploaded) {
@@ -56,10 +57,39 @@ export async function TSSOpenAIRequest(
       url,
       type: `audio/${responseFormat}`,
     });
-    return url;
+    return { url, buffer, responseFormat };
   } catch (error) {
     throw new UploadThingError(`File Upload Error | ${error}`);
   }
 }
 
-export async function ImageGenOpenAIRequest(prompt: string, userId: string) {}
+export async function ImageGenOpenAIRequest(
+  prompt: string,
+  userId: string,
+  n: number
+) {
+  const session = await auth();
+  if (!userId || !session?.sessionToken) {
+    throw new Error("Unauthorized");
+  }
+
+  const trpcServer = await createTrpcServer({ session });
+
+  try {
+    const response = await openai.images.generate({
+      model: "gpt-image-1",
+      prompt,
+      size: "1024x1024",
+      n,
+    });
+
+    if (!response.data) {
+      throw new Error(`Error | Failed to generate images`);
+    }
+
+    const image_base64 = response.data[0].b64_json;
+  } catch (err) {
+    const error = err as Error;
+    throw new Error(`Error while generating image | ${error.message}`);
+  }
+}

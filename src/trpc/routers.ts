@@ -4,6 +4,8 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { InitialType } from "@/lib/types";
+import { InitialTypeSchema } from "@/lib/zodSchemas";
 const db = drizzle(process.env.DATABASE_URL!, { schema });
 
 export const appRouter = router({
@@ -57,6 +59,21 @@ export const appRouter = router({
       } catch {
         throw new TRPCError({ code: "NOT_FOUND" });
       }
+    }),
+
+  TTSOpenAIRequestTRPC: protectedProcedure
+    .input(
+      z.object({
+        state: InitialTypeSchema,
+        userId: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      if (opts.ctx.session.sessionToken) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+      const { state, userId } = opts.input;
+      console.log(state);
     }),
 });
 
