@@ -1,3 +1,4 @@
+export const experimental_ppr = true;
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { IoSettingsOutline } from "react-icons/io5";

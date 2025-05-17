@@ -14,7 +14,7 @@ import { reducer } from "@/lib/utils";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
 import TTSMobileSettings from "@/components/text_to_speech/TTSMobileSettings";
 
-export default function PageContent() {
+export default function TTSPage() {
   const userId = useSession().data?.user?.id;
   const [state, dispatch] = useReducer(reducer, initalArgs);
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
@@ -39,17 +39,20 @@ export default function PageContent() {
       <div className="flex-1 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between py-4 border-b-1 border-black px-4">
           {!matches && (
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-center gap-2 md:hidden">
               <TTSMobileSettings state={state} dispatch={dispatch} />
 
               <p className="text-lg font-bold">Text to speech</p>
             </div>
           )}
-          <div className="flex flex-row items-center gap-1 text-white/70 hover:text-white transition ">
-            <GrStorage className="text-sm" />
-            <Link href="/dashboard/storage" className="text-xs ">
-              Storage
-            </Link>
+          <div className="flex flex-row items-center justify-between  w-full gap-1 text-white/70 hover:text-white transition ">
+            <p className="text-lg font-bold">Text to speech</p>
+            <div className="flex items-center gap-1">
+              <GrStorage className="text-sm" />
+              <Link href="/dashboard/storage" className="text-xs ">
+                Storage
+              </Link>
+            </div>
           </div>
         </div>
         <div className=" flex-1 flex flex-col h-full px-4 ">

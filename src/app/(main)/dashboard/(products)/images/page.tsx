@@ -6,7 +6,7 @@ import { MdOutlineCleaningServices } from "react-icons/md";
 
 const emptyArr = new Array(20).fill("");
 
-function page() {
+function ImagesPage() {
   return (
     <div className="overflow-y-auto">
       <div className="">
@@ -37,4 +37,4 @@ function page() {
   );
 }
 
-export default page;
+export default ImagesPage;
