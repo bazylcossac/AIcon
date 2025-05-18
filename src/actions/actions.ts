@@ -4,6 +4,9 @@
 // opoznic wysyalnie do bazy danych dopiero po tym jak wyslemy blob/file/url na klienta
 
 // zwiekszyc maksymalna wage image do uploadthing
+// dodac next safe action
+
+// refaktoryzacja forma z textarea zeby byl uniwersalny
 
 import { InitialType } from "@/lib/types";
 import { createTrpcServer } from "@/trpc/trpcServer";

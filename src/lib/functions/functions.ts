@@ -1,12 +1,14 @@
-import { base } from "motion/react-client";
 import { InitialType } from "../types";
 
 export function checkIfValid(state: InitialType) {
-  const errorArr = [] as string[] | [];
+  const errorArr: string[] = [];
 
   for (const key in state) {
-    if (typeof state[key] === "string" && key !== "instructions") {
-      if (!state[key]) {
+    if (
+      typeof state[key as keyof InitialType] === "string" &&
+      key !== "instructions"
+    ) {
+      if (!state[key as keyof InitialType]) {
         errorArr.push(`${key.toUpperCase()} is missing`);
       }
     }

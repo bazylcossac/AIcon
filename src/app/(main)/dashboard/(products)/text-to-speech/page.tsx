@@ -6,7 +6,6 @@ import TTSSettings from "@/components/text_to_speech/TTSSettings";
 import { initalArgs } from "@/lib/types";
 import { TSSOpenAIRequest } from "@/actions/actions";
 import { useSession } from "next-auth/react";
-
 import { checkIfValid } from "@/lib/functions/functions";
 import { toast } from "sonner";
 import { reducer } from "@/lib/utils";
@@ -20,12 +19,12 @@ export default function TTSPage() {
   const userId = useSession().data?.user?.id;
   const [state, dispatch] = useReducer(reducer, initalArgs);
   const [fileUrl, setFileUrl] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const [generatingVoice, setGeneratingVoice] = useState(false);
   const [bufferData, setBufferData] = useState<{
     buffer: ArrayBuffer;
     responseFormat: string;
   }>();
-  const [downloadUrl, setDownloadUrl] = useState("");
-  const [generatingVoice, setGeneratingVoice] = useState(false);
 
   useEffect(() => {
     if (bufferData) {

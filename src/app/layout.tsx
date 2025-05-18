@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "@/trpc/Provider";
 import { Toaster } from "@/components/ui/sonner";
+import NProgressProvider from "@/components/NProgressProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,6 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <NProgressProvider />
       <body className={`${inter.variable} antialiased`}>
         <Provider>{children}</Provider>
         <Toaster position={"top-right"} />
