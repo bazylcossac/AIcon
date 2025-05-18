@@ -24,3 +24,4 @@ export function reducer(state: InitialType, action: ActionType): InitialType {
       return { ...state, message: action.payload };
   }
 }
+

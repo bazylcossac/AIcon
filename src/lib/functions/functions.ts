@@ -11,7 +11,6 @@ export function checkIfValid(state: InitialType) {
       }
     }
   }
-
   return errorArr;
 }
 

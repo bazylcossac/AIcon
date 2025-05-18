@@ -1,5 +1,10 @@
 "use server";
 
+// usprawnic wysylanie
+// opoznic wysyalnie do bazy danych dopiero po tym jak wyslemy blob/file/url na klienta
+
+// zwiekszyc maksymalna wage image do uploadthing
+
 import { InitialType } from "@/lib/types";
 import { createTrpcServer } from "@/trpc/trpcServer";
 import { utapi } from "@/lib/uploadThing/uploadthing";
@@ -7,6 +12,7 @@ import OpenAI from "openai";
 import { UploadThingError } from "uploadthing/server";
 import { auth } from "@/auth";
 import { base64ToUInt } from "@/lib/functions/functions";
+import { sleep } from "@/lib/utils";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET_KEY });
 
@@ -36,12 +42,12 @@ export async function TSSOpenAIRequest(
     response_format: responseFormat,
   });
 
+  console.log(response);
+
   const buffer = await response.arrayBuffer();
 
   try {
-    const blob = new Blob([buffer], { type: `audio/${responseFormat}` });
-
-    const file = new File([blob], speechFileName, {
+    const file = new File([buffer], speechFileName, {
       type: `audio/${responseFormat}`,
     });
 
@@ -74,47 +80,47 @@ export async function ImageGenOpenAIRequest(
     throw new Error("Unauthorized");
   }
 
-  const trpcServer = await createTrpcServer({ session });
+  // const trpcServer = await createTrpcServer({ session });
 
-  try {
-    const response = await openai.images.generate({
-      model: "gpt-image-1",
-      prompt,
-      size: "1024x1024",
-      n,
-    });
+  // try {
+  //   const response = await openai.images.generate({
+  //     model: "gpt-image-1",
+  //     prompt,
+  //     size: "1024x1024",
+  //     n,
+  //   });
 
-    if (!response.data) {
-      throw new Error(`Error | Failed to generate image`);
-    }
+  //   if (!response.data) {
+  //     throw new Error(`Error | Failed to generate image`);
+  //   }
 
-    const image_base64 = response.data[0].b64_json;
-    if (!image_base64) {
-      throw new Error("Failed to generate image");
-    }
-    const uintArr = base64ToUInt(image_base64);
+  //   const image_base64 = response.data[0].b64_json;
+  //   if (!image_base64) {
+  //     throw new Error("Failed to generate image");
+  //   }
+  //   const uintArr = base64ToUInt(image_base64);
 
-    const blob = new Blob([uintArr], { type: "image/png" });
+  //   const fileName = `image-${crypto.randomUUID()}.png`;
 
-    const fileName = `image-${crypto.randomUUID()}.png`;
+  //   const file = new File([uintArr], fileName, { type: "image/png" });
 
-    const file = new File([blob], fileName, { type: "image/png" });
+  //   const uploaded = await utapi.uploadFiles([file]);
 
-    const uploaded = await utapi.uploadFiles([file]);
+  //   if (!uploaded) {
+  //     throw new Error("Failed to Upload");
+  //   }
+  //   const url = uploaded[0]!.data!.ufsUrl;
 
-    if (!uploaded) {
-      throw new Error("Failed to Upload");
-    }
-    const url = uploaded[0]!.data!.ufsUrl;
-
-    // uploads to db
-    await trpcServer.uploadFile({
-      authorId: userId,
-      url,
-      type: `image/png`,
-    });
-  } catch (err) {
-    const error = err as Error;
-    throw new Error(`Error while generating image | ${error.message}`);
-  }
+  //   // uploads to db
+  //   await trpcServer.uploadFile({
+  //     authorId: userId,
+  //     url,
+  //     type: `image/png`,
+  //   });
+  // } catch (err) {
+  //   const error = err as Error;
+  //   throw new Error(`Error while generating image | ${error.message}`);
+  // }
+  await sleep(5000);
+  return "https://cx7sgeelsh.ufs.sh/f/sY6aElwL8UT7veLs8EbeEbsynaDp0ziuM6wYZgdhCrRJ4x3o";
 }
