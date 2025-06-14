@@ -3,23 +3,29 @@ import { ImageGenOpenAIRequest } from "@/actions/actions";
 import useImagesStore from "@/store/ImagesStore/Images.bear";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import { FaArrowUp } from "react-icons/fa";
 import { MdAttachFile } from "react-icons/md";
 import { VscSettings } from "react-icons/vsc";
+import { toast } from "sonner";
+import Loading from "../Loading";
+import { cn } from "@/lib/utils";
 
 const ImagesForm = () => {
   const session = useSession();
   const [imagePrompt, setImagesPrompt] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const addImageToStore = useImagesStore((state) => state.addToGeneratedImages);
+  const [isPending, startTransition] = useTransition();
 
   const handleImageGenSubmit = async () => {
     if (session.data?.user?.id) {
       const userId = session.data.user.id;
       setImagesPrompt("");
-      const imageData = await ImageGenOpenAIRequest(imagePrompt, userId, 1);
-      addImageToStore(imageData);
+      startTransition(async () => {
+        const imageData = await ImageGenOpenAIRequest(imagePrompt, userId, 1);
+        addImageToStore(imageData);
+      });
     } else {
       redirect("/");
     }
@@ -28,7 +34,12 @@ const ImagesForm = () => {
   return (
     <div className="mt-auto fixed bottom-0 md:w-10/12 w-full">
       <div
-        className="w-full  md:w-6/12  h-34 mx-auto mt-auto mb-10 rounded-2xl bg-neutral-700 border-white/50 focus-within:border-white/30 focus-within:border-1 transition relative cursor-text "
+        className={cn(
+          "w-full md:w-6/12 h-34 mx-auto mt-auto mb-10 rounded-2xl bg-neutral-700 border-white/50 focus-within:border-white/30 focus-within:border-1 transition relative cursor-text",
+          {
+            "brightness-50 cursor-default": isPending,
+          }
+        )}
         onClick={() => {
           if (textareaRef && typeof textareaRef !== "function") {
             textareaRef.current?.focus();
@@ -44,10 +55,12 @@ const ImagesForm = () => {
         >
           <textarea
             ref={textareaRef}
-            className="p-4 rounded-2xl resize-none outline-none custom-scrollbar text-md  md:text-md w-11/12 "
+            className="p-4 rounded-2xl resize-none outline-none custom-scrollbar text-md  md:text-md w-11/12"
             placeholder="Describe what you want to see..."
             value={imagePrompt}
-            // maxLength={120}
+            disabled={isPending}
+            maxLength={120}
+            required
             onChange={(e) => setImagesPrompt(e.target.value)}
           ></textarea>
           <div className="flex justify-between  p-2 px-3 absolute -bottom-12  w-full ">
@@ -75,10 +88,15 @@ const ImagesForm = () => {
               </button>
             </div>
             <button
-              className="bg-green-700 text-xs p-2 md:p-3 text-md rounded-full hover:bg-green-800 transition cursor-pointer font-bold"
+              className="bg-green-700 text-xs p-2 md:p-3 text-md rounded-full hover:bg-green-800 transition cursor-pointer font-bold disabled:bg-neutral-600 disabled:cursor-not-allowed"
               type="submit"
+              disabled={isPending}
             >
-              <FaArrowUp />
+              {isPending ? (
+                <Loading classNamesBig="w-6 h-6" classNamesSmall="h-4 w-4" />
+              ) : (
+                <FaArrowUp />
+              )}
             </button>
           </div>
         </form>
