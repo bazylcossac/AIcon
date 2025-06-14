@@ -9,3 +9,8 @@ export const InitialTypeSchema = z.object({
 });
 
 export const UUIDSchema = z.string().uuid();
+
+export const GenerateImageSchema = z.object({
+  prompt: z.string().max(50),
+  userId: z.string(),
+});

@@ -131,6 +131,7 @@ export async function ImageGenOpenAIRequest(
     prompt,
     quality: "medium",
     size: "1024x1024",
+    id: "1",
   };
   return result;
 }

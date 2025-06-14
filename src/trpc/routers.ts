@@ -5,7 +5,8 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { InitialType } from "@/lib/types";
-import { InitialTypeSchema } from "@/lib/zodSchemas";
+import { GenerateImageSchema, InitialTypeSchema } from "@/lib/zodSchemas";
+import { ImageGenOpenAIRequest } from "@/actions/actions";
 const db = drizzle(process.env.DATABASE_URL!, { schema });
 
 export const appRouter = router({
@@ -45,13 +46,22 @@ export const appRouter = router({
         throw new TRPCError({ code: "SERVICE_UNAVAILABLE" });
       }
     }),
+
+  generateOpenAiImage: protectedProcedure
+    .input(GenerateImageSchema)
+    .mutation(async (opts) => {
+      const { prompt, userId } = opts.input;
+      try {
+        const imageData = await ImageGenOpenAIRequest(prompt, userId, 1);
+        return imageData;
+      } catch {
+        throw new TRPCError({ code: "SERVICE_UNAVAILABLE" });
+      }
+    }),
   cleanupUserSession: protectedProcedure
     .input(z.string().uuid())
     .mutation(async (opts) => {
       const sessionToken = opts.input;
-      if (!sessionToken) {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
-      }
       try {
         await db
           .delete(schema.sessions)
@@ -69,9 +79,6 @@ export const appRouter = router({
       })
     )
     .mutation(async (opts) => {
-      if (opts.ctx.session.sessionToken) {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
-      }
       const { state, userId } = opts.input;
       console.log(state);
     }),

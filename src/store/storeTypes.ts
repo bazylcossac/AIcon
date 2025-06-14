@@ -3,4 +3,5 @@ export type GeneratedImageType = {
   prompt: string;
   quality: "high" | "medium" | "low";
   size: string;
+  id: string;
 };

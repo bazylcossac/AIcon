@@ -3,7 +3,7 @@
 }
 
 #nprogress .bar {
-  background: #bebebe; /* Tailwind blue-500 */
+  background: #bebebe;
   position: fixed;
   z-index: 9999;
   top: 0;

@@ -10,18 +10,24 @@ import { redirect } from "next/navigation";
 import { ImageGenOpenAIRequest } from "@/actions/actions";
 import ImagesForm from "@/components/images/ImagesForm";
 import ImagesList from "@/components/images/ImagesList";
+import { trpc } from "@/trpc/trpcClient";
 
 function ImagesPage() {
   const session = useSession();
   const [imagePrompt, setImagesPrompt] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const addImageToStore = useImagesStore((state) => state.addToGeneratedImages);
+  const { mutateAsync } = trpc.generateOpenAiImage.useMutation();
   const handleImageGenSubmit = async () => {
     if (session.data?.user?.id) {
-      const prompt = imagePrompt;
       const userId = session.data.user.id;
       setImagesPrompt("");
-      const imageData = await ImageGenOpenAIRequest(prompt, userId, 1);
+
+      // const imageData = await mutateAsync({
+      //   prompt: imagePrompt,
+      //   userId,
+      // });
+      const imageData = await ImageGenOpenAIRequest(imagePrompt, userId, 1);
       addImageToStore(imageData);
     } else {
       redirect("/");

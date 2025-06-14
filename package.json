@@ -44,6 +44,7 @@
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.2.0",
     "uploadthing": "^7.7.2",
+    "use-sync-external-store": "^1.5.0",
     "wavesurfer.js": "^7.9.5",
     "zod": "^3.24.4",
     "zustand": "^5.0.4"
