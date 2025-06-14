@@ -5,7 +5,7 @@ export type InitiaValuesTypes = {
   generatedImages: GeneratedImageType[];
 };
 
-type StoreActions = {
+export type StoreActions = {
   addToGeneratedImages: (genImage: GeneratedImageType) => void;
 };
 
@@ -14,7 +14,7 @@ type ImagesStoreTypes = InitiaValuesTypes & StoreActions;
 const useImagesStore = create<ImagesStoreTypes>((set, get) => ({
   generatedImages: [] as GeneratedImageType[],
   addToGeneratedImages: (genImage: GeneratedImageType) =>
-    set(() => ({ generatedImages: [...get().generatedImages, genImage] })),
+    set(() => ({ generatedImages: [genImage, ...get().generatedImages] })),
 }));
 
 export default useImagesStore;

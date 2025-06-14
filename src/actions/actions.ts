@@ -16,6 +16,7 @@ import { UploadThingError } from "uploadthing/server";
 import { auth } from "@/auth";
 import { base64ToUInt } from "@/lib/functions/functions";
 import { sleep } from "@/lib/utils";
+import { GeneratedImageType } from "@/store/storeTypes";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET_KEY });
 
@@ -125,5 +126,11 @@ export async function ImageGenOpenAIRequest(
   //   throw new Error(`Error while generating image | ${error.message}`);
   // }
   await sleep(5000);
-  return "https://cx7sgeelsh.ufs.sh/f/sY6aElwL8UT7veLs8EbeEbsynaDp0ziuM6wYZgdhCrRJ4x3o";
+  const result: GeneratedImageType = {
+    url: "https://cx7sgeelsh.ufs.sh/f/sY6aElwL8UT7veLs8EbeEbsynaDp0ziuM6wYZgdhCrRJ4x3o",
+    prompt,
+    quality: "medium",
+    size: "1024x1024",
+  };
+  return result;
 }

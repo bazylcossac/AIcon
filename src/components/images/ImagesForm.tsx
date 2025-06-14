@@ -14,7 +14,6 @@ const ImagesForm = forwardRef<HTMLTextAreaElement, ImagesFormProps>(
     const { handleImageGenSubmit, imagePrompt, setImagesPrompt } = props;
     return (
       <>
-        <div className="grid w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 "></div>
         <div
           className="w-11/12 md:w-6/12  h-34 mx-auto mt-auto mb-28 rounded-2xl bg-neutral-700 border-white/50 focus-within:border-white/30 focus-within:border-1 transition relative cursor-text"
           onClick={() => {
