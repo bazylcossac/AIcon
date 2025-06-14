@@ -1,14 +1,12 @@
 import React, { memo } from "react";
-import { shallow } from "zustand/shallow";
 import {
   getImages,
   useImagesShallowStore,
+  useImagesStoreWithEq,
 } from "../../store/ImagesStore/Images.selectors";
-import useImagesStore from "@/store/ImagesStore/Images.bear";
-import { GeneratedImageType } from "@/store/storeTypes";
 
 function ImagesList() {
-  const images = useImagesShallowStore(getImages);
+  const images = useImagesStoreWithEq(getImages);
   console.log(images);
 
   return <div>ImagesList</div>;

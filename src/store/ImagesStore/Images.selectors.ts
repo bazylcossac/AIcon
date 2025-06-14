@@ -1,11 +1,7 @@
-import { useShallow } from "zustand/react/shallow";
-import useImagesStore, { InitiaValuesTypes, StoreActions } from "./Images.bear";
-import { GeneratedImageType } from "../storeTypes";
+import useImagesStore, { ImagesStoreTypes } from "./Images.bear";
 
-export const getImages = (state: InitiaValuesTypes) => state.generatedImages;
+import { createWithEqFunction } from "../createWithEqFunctions";
 
-export const useImagesShallowStore = <T>(
-  selector: ReturnType<typeof useImagesStore.getState>
-): T => {
-  return useImagesStore(useShallow(selector));
-};
+export const getImages = (state: ImagesStoreTypes) => state.generatedImages;
+
+export const useImagesStoreWithEq = createWithEqFunction(useImagesStore);
