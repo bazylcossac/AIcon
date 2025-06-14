@@ -1,38 +1,20 @@
-"use client";
 import Link from "next/link";
-import React, { useState, useRef } from "react";
 import { GrStorage } from "react-icons/gr";
 import { MdOutlineCleaningServices } from "react-icons/md";
-import useImagesStore from "@/store/ImagesStore/Images.bear";
-import { addImageToStore } from "@/store/ImagesStore/Images.selectors";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { ImageGenOpenAIRequest } from "@/actions/actions";
 import ImagesForm from "@/components/images/ImagesForm";
 import ImagesList from "@/components/images/ImagesList";
-import { trpc } from "@/trpc/trpcClient";
+import { Suspense } from "react";
+import { createTrpcServer } from "@/trpc/trpcServer";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-function ImagesPage() {
-  const session = useSession();
-  const [imagePrompt, setImagesPrompt] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const addImageToStore = useImagesStore((state) => state.addToGeneratedImages);
-  const { mutateAsync } = trpc.generateOpenAiImage.useMutation();
-  const handleImageGenSubmit = async () => {
-    if (session.data?.user?.id) {
-      const userId = session.data.user.id;
-      setImagesPrompt("");
-
-      // const imageData = await mutateAsync({
-      //   prompt: imagePrompt,
-      //   userId,
-      // });
-      const imageData = await ImageGenOpenAIRequest(imagePrompt, userId, 1);
-      addImageToStore(imageData);
-    } else {
-      redirect("/");
-    }
-  };
+async function ImagesPage() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    redirect("/");
+  }
+  const trpcServer = await createTrpcServer({ session });
+  const images = await trpcServer.getUserImages(session?.user?.id);
 
   return (
     <div className=" w-full h-full">
@@ -53,14 +35,13 @@ function ImagesPage() {
           </div>
         </div>
         <div className=" h-full overflow-y-auto flex flex-col">
-          <div className="grid w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 "></div>
-          <ImagesList />
-          <ImagesForm
-            handleImageGenSubmit={handleImageGenSubmit}
-            setImagesPrompt={setImagesPrompt}
-            imagePrompt={imagePrompt}
-            ref={textareaRef}
-          />
+          <Suspense>
+            <div className="grid w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-2 px-2">
+              <ImagesList images={images} />
+            </div>
+
+            <ImagesForm />
+          </Suspense>
         </div>
       </div>
     </div>

@@ -4,8 +4,12 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
-import { InitialType } from "@/lib/types";
-import { GenerateImageSchema, InitialTypeSchema } from "@/lib/zodSchemas";
+
+import {
+  GenerateImageSchema,
+  ImageUploadDBSchema,
+  InitialTypeSchema,
+} from "@/lib/zodSchemas";
 import { ImageGenOpenAIRequest } from "@/actions/actions";
 const db = drizzle(process.env.DATABASE_URL!, { schema });
 
@@ -14,20 +18,16 @@ export const appRouter = router({
     return await db.query.users.findMany();
   }),
   uploadFile: protectedProcedure
-    .input(
-      z.object({
-        authorId: z.string().uuid(),
-        url: z.string().url(),
-        type: z.string(),
-      })
-    )
+    .input(ImageUploadDBSchema)
     .mutation(async (opts) => {
-      const { authorId, url, type } = opts.input;
+      const { authorId, url, type, prompt, quality, size } = opts.input;
       if (!url) {
         throw new Error("No url provided");
       }
       try {
-        await db.insert(schema.files).values({ authorId, url, type });
+        await db
+          .insert(schema.files)
+          .values({ authorId, url, type, prompt, quality, size });
       } catch (err) {
         const error = err as Error;
         throw new Error(error.message);
@@ -43,7 +43,19 @@ export const appRouter = router({
           .from(schema.files)
           .where(eq(schema.files.authorId, otps.input));
       } catch {
-        throw new TRPCError({ code: "SERVICE_UNAVAILABLE" });
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+    }),
+  getUserImages: protectedProcedure
+    .input(z.string().uuid())
+    .query(async (opts) => {
+      try {
+        return await db
+          .select()
+          .from(schema.files)
+          .where(eq(schema.files.authorId, opts.input));
+      } catch {
+        throw new TRPCError({ code: "NOT_FOUND" });
       }
     }),
 

@@ -14,3 +14,12 @@ export const GenerateImageSchema = z.object({
   prompt: z.string().max(50),
   userId: z.string(),
 });
+
+export const ImageUploadDBSchema = z.object({
+  authorId: z.string().uuid(),
+  url: z.string().url(),
+  type: z.string(),
+  prompt: z.string(),
+  quality: z.union([z.literal("low"), z.literal("medium"), z.literal("high")]),
+  size: z.string(),
+});

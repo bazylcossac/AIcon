@@ -120,18 +120,29 @@ export async function ImageGenOpenAIRequest(
   //     authorId: userId,
   //     url,
   //     type: `image/png`,
+  //     prompt,
+  //     quality: "medium",
+  //     size: "1024x1024",
   //   });
+
+  //   return {
+  //     url,
+  //     prompt,
+  //     quality: "medium",
+  //     size: "1024x1024",
+  //     id: crypto.randomUUID(),
+  //   } as GeneratedImageType;
   // } catch (err) {
   //   const error = err as Error;
   //   throw new Error(`Error while generating image | ${error.message}`);
   // }
-  await sleep(5000);
+  // // await sleep(5000);
   const result: GeneratedImageType = {
     url: "https://cx7sgeelsh.ufs.sh/f/sY6aElwL8UT7veLs8EbeEbsynaDp0ziuM6wYZgdhCrRJ4x3o",
     prompt,
     quality: "medium",
     size: "1024x1024",
-    id: "1",
+    id: crypto.randomUUID(),
   };
   return result;
 }

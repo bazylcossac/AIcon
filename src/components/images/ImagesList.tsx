@@ -1,26 +1,33 @@
 "use client";
-import React, { memo } from "react";
+import React, { memo, useRef, useState } from "react";
 import {
   getImages,
   useImagesStoreWithEq,
 } from "../../store/ImagesStore/Images.selectors";
 import Image from "next/image";
+import { ImagesDB } from "@/lib/types";
+import { GeneratedImageType } from "@/store/storeTypes";
 
-function ImagesList() {
-  const images = useImagesStoreWithEq(getImages);
+const render = 0;
+
+function ImagesList({ images }: { images: ImagesDB }) {
+  const [allImages, setAllImages] =
+    useState<(ImagesDB | GeneratedImageType)[]>(images);
+  const data = useImagesStoreWithEq(getImages);
 
   return (
-    <div>
-      {images.map((image) => (
+    <>
+      {allImages.map((image) => (
         <Image
           src={image.url}
-          width={100}
-          height={100}
+          width={350}
+          height={350}
           alt="image"
           key={image.id}
+          className="cursor-pointer hover:brightness-80 transition rounded-md"
         />
       ))}
-    </div>
+    </>
   );
 }
 export default memo(ImagesList);

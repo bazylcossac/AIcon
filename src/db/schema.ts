@@ -29,6 +29,9 @@ export const files = pgTable("file", {
   authorId: text("authorId")
     .references(() => users.id)
     .notNull(),
+  prompt: text("prompt").notNull(),
+  quality: text("quality").notNull(),
+  size: text("size").notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
 });
 

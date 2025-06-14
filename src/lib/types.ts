@@ -17,6 +17,17 @@ export type ActionType =
   | { type: "SET_FORMAT"; payload: "mp3" | "wav" }
   | { type: "SET_MESSAGE"; payload: string };
 
+export type ImagesDB = {
+  id: string;
+  url: string;
+  type: string;
+  authorId: string;
+  prompt: string;
+  quality: string;
+  size: string;
+  createdAt: Date | null;
+};
+
 type complex = {
   a: string;
   b: string;
