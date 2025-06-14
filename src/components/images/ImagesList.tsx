@@ -1,23 +1,26 @@
 "use client";
-import React, { memo, useRef, useState } from "react";
+import React, { memo, useMemo } from "react";
 import {
   getImages,
   useImagesStoreWithEq,
 } from "../../store/ImagesStore/Images.selectors";
 import Image from "next/image";
 import { ImagesDB } from "@/lib/types";
-import { GeneratedImageType } from "@/store/storeTypes";
 
-const render = 0;
-
-function ImagesList({ images }: { images: ImagesDB }) {
-  const [allImages, setAllImages] =
-    useState<(ImagesDB | GeneratedImageType)[]>(images);
+function ImagesList({ images }: { images: ImagesDB[] }) {
   const data = useImagesStoreWithEq(getImages);
+
+  const imagesData = useMemo(() => {
+    if (data.length) {
+      return [...data, ...images];
+    } else {
+      return images;
+    }
+  }, [data, images]);
 
   return (
     <>
-      {allImages.map((image) => (
+      {imagesData.map((image) => (
         <Image
           src={image.url}
           width={350}

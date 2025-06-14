@@ -84,65 +84,65 @@ export async function ImageGenOpenAIRequest(
     throw new Error("Unauthorized");
   }
 
-  // const trpcServer = await createTrpcServer({ session });
+  const trpcServer = await createTrpcServer({ session });
 
-  // try {
-  //   const response = await openai.images.generate({
-  //     model: "gpt-image-1",
-  //     prompt,
-  //     size: "1024x1024",
-  //     n,
-  //   });
+  try {
+    const response = await openai.images.generate({
+      model: "gpt-image-1",
+      prompt,
+      size: "1024x1024",
+      n,
+    });
 
-  //   if (!response.data) {
-  //     throw new Error(`Error | Failed to generate image`);
-  //   }
+    if (!response.data) {
+      throw new Error(`Error | Failed to generate image`);
+    }
 
-  //   const image_base64 = response.data[0].b64_json;
-  //   if (!image_base64) {
-  //     throw new Error("Failed to generate image");
-  //   }
-  //   const uintArr = base64ToUInt(image_base64);
+    const image_base64 = response.data[0].b64_json;
+    if (!image_base64) {
+      throw new Error("Failed to generate image");
+    }
+    const uintArr = base64ToUInt(image_base64);
 
-  //   const fileName = `image-${crypto.randomUUID()}.png`;
+    const fileName = `image-${crypto.randomUUID()}.png`;
 
-  //   const file = new File([uintArr], fileName, { type: "image/png" });
+    const file = new File([uintArr], fileName, { type: "image/png" });
 
-  //   const uploaded = await utapi.uploadFiles([file]);
+    const uploaded = await utapi.uploadFiles([file]);
 
-  //   if (!uploaded) {
-  //     throw new Error("Failed to Upload");
-  //   }
-  //   const url = uploaded[0]!.data!.ufsUrl;
+    if (!uploaded) {
+      throw new Error("Failed to Upload");
+    }
+    const url = uploaded[0]!.data!.ufsUrl;
 
-  //   // uploads to db
-  //   await trpcServer.uploadFile({
-  //     authorId: userId,
-  //     url,
-  //     type: `image/png`,
-  //     prompt,
-  //     quality: "medium",
-  //     size: "1024x1024",
-  //   });
+    // uploads to db
+    await trpcServer.uploadFile({
+      authorId: userId,
+      url,
+      type: `image/png`,
+      prompt,
+      quality: "medium",
+      size: "1024x1024",
+    });
 
-  //   return {
-  //     url,
-  //     prompt,
-  //     quality: "medium",
-  //     size: "1024x1024",
-  //     id: crypto.randomUUID(),
-  //   } as GeneratedImageType;
-  // } catch (err) {
-  //   const error = err as Error;
-  //   throw new Error(`Error while generating image | ${error.message}`);
-  // }
+    return {
+      url,
+      prompt,
+      quality: "medium",
+      size: "1024x1024",
+      id: crypto.randomUUID(),
+    } as GeneratedImageType;
+  } catch (err) {
+    const error = err as Error;
+    throw new Error(`Error while generating image | ${error.message}`);
+  }
   // // await sleep(5000);
-  const result: GeneratedImageType = {
-    url: "https://cx7sgeelsh.ufs.sh/f/sY6aElwL8UT7veLs8EbeEbsynaDp0ziuM6wYZgdhCrRJ4x3o",
-    prompt,
-    quality: "medium",
-    size: "1024x1024",
-    id: crypto.randomUUID(),
-  };
-  return result;
+  // const result: GeneratedImageType = {
+  //   url: "https://cx7sgeelsh.ufs.sh/f/sY6aElwL8UT7veLs8EbeEbsynaDp0ziuM6wYZgdhCrRJ4x3o",
+  //   prompt,
+  //   quality: "medium",
+  //   size: "1024x1024",
+  //   id: crypto.randomUUID(),
+  // };
+  // return result;
 }

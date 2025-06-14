@@ -2,7 +2,7 @@ import { protectedProcedure, router } from "./init";
 import * as schema from "../db/schema";
 import { drizzle } from "drizzle-orm/neon-http";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 import {
@@ -53,7 +53,8 @@ export const appRouter = router({
         return await db
           .select()
           .from(schema.files)
-          .where(eq(schema.files.authorId, opts.input));
+          .where(eq(schema.files.authorId, opts.input))
+          .orderBy(desc(schema.files.createdAt));
       } catch {
         throw new TRPCError({ code: "NOT_FOUND" });
       }
