@@ -5,8 +5,13 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Session } from "next-auth";
 import TokensAmount from "./TokensAmount";
+import { createTrpcServer } from "@/trpc/trpcServer";
 const HeaderClient = dynamic(() => import("./HeaderClient"));
+
 async function Header({ session }: { session: Session }) {
+  const trpcServer = await createTrpcServer({ session });
+  const tokens = await trpcServer.getUserTokens();
+
   return (
     <>
       <header className="h-full flex items-center justify-between mx-4">
@@ -22,7 +27,7 @@ async function Header({ session }: { session: Session }) {
           </Link>
           <div className="text-xs ">
             <Suspense>
-              <TokensAmount tokens={10} />
+              <TokensAmount tokens={tokens ?? 0} />
             </Suspense>
           </div>
           <p className="font-bold mx-1 text-white/50">/</p>

@@ -17,6 +17,7 @@ import { auth } from "@/auth";
 import { base64ToUInt } from "@/lib/functions/functions";
 import { sleep } from "@/lib/utils";
 import { GeneratedImageType } from "@/store/storeTypes";
+import { db } from "@/db";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET_KEY });
 

@@ -4,7 +4,7 @@ import {
   getUserTokens,
   useUserStoreWithEq,
 } from "@/store/UserStore/User.selectors";
-import React, { useEffect, useTransition } from "react";
+import React, { useEffect } from "react";
 
 function TokensAmount({ tokens }: { tokens: number }) {
   const userTokens = useUserStoreWithEq(getUserTokens);

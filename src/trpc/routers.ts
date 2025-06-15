@@ -59,7 +59,24 @@ export const appRouter = router({
         throw new TRPCError({ code: "NOT_FOUND" });
       }
     }),
-
+  getUserTokens: protectedProcedure.query(async (opts) => {
+    const userId = opts.ctx.session.user?.id;
+    if (!userId) return;
+    try {
+      const { tokens } = await db
+        .select({ tokens: schema.users.tokens })
+        .from(schema.users)
+        .where(eq(schema.users.id, userId))
+        .limit(1)
+        .then((rows) => rows[0]);
+      if (!tokens) {
+        return 0;
+      }
+      return tokens;
+    } catch {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+  }),
   generateOpenAiImage: protectedProcedure
     .input(GenerateImageSchema)
     .mutation(async (opts) => {

@@ -20,7 +20,7 @@ const useUserStore = create<UserStoreTypes>((set, get) => ({
   ...InitialValues,
   addUserAmountTokens: (amount) => set({ tokens: get().tokens + amount }),
   removeUserAmountTokens: (amount) => set({ tokens: get().tokens - amount }),
-  setUserTokens: (amount) => set({ tokens: amount }),
+  setUserTokens: (amount) => set({ tokens: +amount }),
 }));
 
 export default useUserStore;
