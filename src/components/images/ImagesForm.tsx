@@ -19,9 +19,9 @@ const ImagesForm = () => {
   const session = useSession();
   const [imagePrompt, setImagesPrompt] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const addImageToStore = useImagesStore((state) => state.addToGeneratedImages);
   const [isPending, startTransition] = useTransition();
   const canUserGenerate = useUserStoreWithEq(hasUserTokens);
+  const addImageToStore = useImagesStore((state) => state.addToGeneratedImages);
 
   const handleImageGenSubmit = async () => {
     if (session.data?.user?.id) {

@@ -7,6 +7,7 @@ export type InitialValuesTypes = {
 export type StoreActions = {
   addUserAmountTokens: (amount: number) => void;
   removeUserAmountTokens: (amount: number) => void;
+  setUserTokens: (amount: number) => void;
 };
 
 export type UserStoreTypes = InitialValuesTypes & StoreActions;
@@ -19,6 +20,7 @@ const useUserStore = create<UserStoreTypes>((set, get) => ({
   ...InitialValues,
   addUserAmountTokens: (amount) => set({ tokens: get().tokens + amount }),
   removeUserAmountTokens: (amount) => set({ tokens: get().tokens - amount }),
+  setUserTokens: (amount) => set({ tokens: amount }),
 }));
 
 export default useUserStore;

@@ -4,10 +4,16 @@ import {
   getUserTokens,
   useUserStoreWithEq,
 } from "@/store/UserStore/User.selectors";
-import React from "react";
+import React, { useEffect, useTransition } from "react";
 
-function TokensAmount() {
+function TokensAmount({ tokens }: { tokens: number }) {
   const userTokens = useUserStoreWithEq(getUserTokens);
+  const setTokens = useUserStoreWithEq((state) => state.setUserTokens);
+
+  useEffect(() => {
+    setTokens(tokens);
+  }, [tokens, setTokens]);
+
   return (
     <div
       className={cn("flex items-center", {

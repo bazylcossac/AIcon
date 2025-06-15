@@ -22,7 +22,7 @@ async function Header({ session }: { session: Session }) {
           </Link>
           <div className="text-xs ">
             <Suspense>
-              <TokensAmount />
+              <TokensAmount tokens={10} />
             </Suspense>
           </div>
           <p className="font-bold mx-1 text-white/50">/</p>
