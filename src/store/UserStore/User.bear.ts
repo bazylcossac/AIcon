@@ -1,15 +1,15 @@
 import { create } from "zustand";
 
-type InitialValuesTypes = {
+export type InitialValuesTypes = {
   tokens: number;
 };
 
-type StoreActions = {
+export type StoreActions = {
   addUserAmountTokens: (amount: number) => void;
   removeUserAmountTokens: (amount: number) => void;
 };
 
-type UserStoreTypes = InitialValuesTypes & StoreActions;
+export type UserStoreTypes = InitialValuesTypes & StoreActions;
 
 const InitialValues: InitialValuesTypes = {
   tokens: 0,

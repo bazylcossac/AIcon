@@ -3,13 +3,17 @@ import { ImageGenOpenAIRequest } from "@/actions/actions";
 import useImagesStore from "@/store/ImagesStore/Images.bear";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import React, { useRef, useState, useTransition } from "react";
 import { FaArrowUp } from "react-icons/fa";
 import { MdAttachFile } from "react-icons/md";
 import { VscSettings } from "react-icons/vsc";
-import { toast } from "sonner";
+
 import Loading from "../Loading";
 import { cn } from "@/lib/utils";
+import {
+  hasUserTokens,
+  useUserStoreWithEq,
+} from "@/store/UserStore/User.selectors";
 
 const ImagesForm = () => {
   const session = useSession();
@@ -17,6 +21,7 @@ const ImagesForm = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const addImageToStore = useImagesStore((state) => state.addToGeneratedImages);
   const [isPending, startTransition] = useTransition();
+  const canUserGenerate = useUserStoreWithEq(hasUserTokens);
 
   const handleImageGenSubmit = async () => {
     if (session.data?.user?.id) {
@@ -37,7 +42,7 @@ const ImagesForm = () => {
         className={cn(
           "w-full md:w-6/12 h-34 mx-auto mt-auto mb-10 rounded-2xl bg-neutral-700 border-white/50 focus-within:border-white/30 focus-within:border-1 transition relative cursor-text",
           {
-            "brightness-50 cursor-default": isPending,
+            "brightness-50 cursor-default": isPending || !canUserGenerate,
           }
         )}
         onClick={() => {
@@ -57,20 +62,32 @@ const ImagesForm = () => {
             ref={textareaRef}
             className="p-4 rounded-2xl resize-none outline-none custom-scrollbar text-md  md:text-md w-11/12"
             placeholder={
-              isPending ? "Generating..." : "Describe what you want to see..."
+              isPending
+                ? "Generating..."
+                : canUserGenerate
+                ? "Describe what you want to see..."
+                : "No tokens"
             }
             value={imagePrompt}
-            disabled={isPending}
+            disabled={isPending || !canUserGenerate}
             maxLength={120}
             required
             onChange={(e) => setImagesPrompt(e.target.value)}
           ></textarea>
           <div className="flex justify-between  p-2 px-3 absolute -bottom-12  w-full ">
-            <div className="flex flex-row items-center gap-2 [&>*]:cursor-pointer [&>*]:hover:text-white text-white/50 [&>*]:hover:bg-white/30 transition">
+            <div
+              className={cn(
+                "flex flex-row items-center gap-2 [&>*]:cursor-pointer [&>*]:hover:text-white text-white/50 [&>*]:hover:bg-white/30 transition",
+                {
+                  "[&>*]:hidden": !canUserGenerate,
+                }
+              )}
+            >
               <button
                 className="p-1.25 rounded-full transition"
                 onClick={(e) => e.stopPropagation()}
                 type="button"
+                disabled={!canUserGenerate}
               >
                 <VscSettings />
               </button>
@@ -78,6 +95,7 @@ const ImagesForm = () => {
                 className="px-2 py-1 rounded-full transition"
                 onClick={(e) => e.stopPropagation()}
                 type="button"
+                disabled={!canUserGenerate}
               >
                 <p className="text-sm">1x</p>
               </button>
@@ -85,14 +103,21 @@ const ImagesForm = () => {
                 className="p-1.25 rounded-full transition"
                 onClick={(e) => e.stopPropagation()}
                 type="button"
+                disabled={!canUserGenerate}
               >
                 <MdAttachFile />
               </button>
             </div>
             <button
-              className="bg-green-700 text-xs p-2 md:p-3 text-md rounded-full hover:bg-green-800 transition cursor-pointer font-bold disabled:bg-neutral-600 disabled:cursor-not-allowed"
+              className={cn(
+                "bg-green-700 text-xs p-2 md:p-3 text-md rounded-full hover:bg-green-800 transition cursor-pointer font-bold disabled:bg-neutral-600 disabled:cursor-not-allowed",
+                {
+                  "bg-neutral-600 hover:bg-neutral-600 cursor-not-allowed":
+                    !canUserGenerate,
+                }
+              )}
               type="submit"
-              disabled={isPending}
+              disabled={isPending || !canUserGenerate}
             >
               {isPending ? (
                 <Loading classNamesBig="w-6 h-6" classNamesSmall="h-4 w-4" />
