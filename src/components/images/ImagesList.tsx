@@ -10,6 +10,7 @@ import { ImagesDB } from "@/lib/types";
 function ImagesList({ images }: { images: ImagesDB[] }) {
   const data = useImagesStoreWithEq(getImages);
 
+  // TODO: kiedy user wroci na strone sa podwojne obrazki przez to ze dane sa z  state i servera
   const imagesData = useMemo(() => {
     if (data.length) {
       return [...data, ...images];

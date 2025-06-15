@@ -1,10 +1,10 @@
-export const experimental_ppr = true;
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Session } from "next-auth";
+import TokensAmount from "./TokensAmount";
 const HeaderClient = dynamic(() => import("./HeaderClient"));
 async function Header({ session }: { session: Session }) {
   return (
@@ -21,7 +21,9 @@ async function Header({ session }: { session: Session }) {
             Buy Tokens
           </Link>
           <div className="text-xs ">
-            <span className="text-sm font-bold mx-1">12</span>Tokens
+            <Suspense>
+              <TokensAmount />
+            </Suspense>
           </div>
           <p className="font-bold mx-1 text-white/50">/</p>
           <Link

@@ -6,10 +6,8 @@ import { cn } from "@/lib/utils";
 import { cleanupSession } from "@/actions/actions";
 
 export default async function Home() {
-const user = await auth();
+  const user = await auth();
 
-  // get credits from db
-  // primise .all
   const handleSignIn = async () => {
     "use server";
     await signIn("google", { redirectTo: "/dashboard" });

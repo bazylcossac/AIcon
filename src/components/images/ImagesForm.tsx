@@ -56,7 +56,9 @@ const ImagesForm = () => {
           <textarea
             ref={textareaRef}
             className="p-4 rounded-2xl resize-none outline-none custom-scrollbar text-md  md:text-md w-11/12"
-            placeholder="Describe what you want to see..."
+            placeholder={
+              isPending ? "Generating..." : "Describe what you want to see..."
+            }
             value={imagePrompt}
             disabled={isPending}
             maxLength={120}

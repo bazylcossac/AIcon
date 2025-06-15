@@ -1,6 +1,6 @@
 import useImagesStore, { ImagesStoreTypes } from "./Images.bear";
 
-import { createWithEqFunction } from "../createWithEqFunctions";
+import { createWithEqFunction } from "../StoreFunctions/createWithEqFunctions";
 
 export const getImages = (state: ImagesStoreTypes) => state.generatedImages;
 
