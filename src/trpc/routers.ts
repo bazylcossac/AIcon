@@ -2,7 +2,7 @@ import { protectedProcedure, router } from "./init";
 import * as schema from "../db/schema";
 import { drizzle } from "drizzle-orm/neon-http";
 import { z } from "zod";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 import {
@@ -53,7 +53,13 @@ export const appRouter = router({
         return await db
           .select()
           .from(schema.files)
-          .where(eq(schema.files.authorId, opts.input))
+          .where(
+            and(
+              eq(schema.files.authorId, opts.input),
+              eq(schema.files.type, "image/png")
+            )
+          )
+
           .orderBy(desc(schema.files.createdAt));
       } catch {
         throw new TRPCError({ code: "NOT_FOUND" });
@@ -67,7 +73,7 @@ export const appRouter = router({
         .select({ tokens: schema.users.tokens })
         .from(schema.users)
         .where(eq(schema.users.id, userId))
-        .limit(1)
+      .limit(1)
         .then((rows) => rows[0]);
       if (!tokens) {
         return 0;
@@ -77,6 +83,21 @@ export const appRouter = router({
       throw new TRPCError({ code: "NOT_FOUND" });
     }
   }),
+  removeUserTokenAmount: protectedProcedure
+    .input(z.number())
+    .mutation(async (opts) => {
+      try {
+        const userId = opts.ctx.session.user?.id;
+        if (!userId) return;
+
+        await db
+          .update(schema.users)
+          .set({ tokens: sql`${schema.users.tokens} - 1` })
+          .where(eq(schema.users.id, userId));
+      } catch {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+    }),
   generateOpenAiImage: protectedProcedure
     .input(GenerateImageSchema)
     .mutation(async (opts) => {

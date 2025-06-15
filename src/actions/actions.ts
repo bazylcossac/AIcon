@@ -18,6 +18,7 @@ import { base64ToUInt } from "@/lib/functions/functions";
 import { sleep } from "@/lib/utils";
 import { GeneratedImageType } from "@/store/storeTypes";
 import { db } from "@/db";
+import { trpc } from "@/trpc/trpcClient";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET_KEY });
 
@@ -46,9 +47,9 @@ export async function TSSOpenAIRequest(
     voice,
     response_format: responseFormat,
   });
-
-  console.log(response);
-
+  if (response.ok) {
+    trpcServer.removeUserTokenAmount(1);
+  }
   const buffer = await response.arrayBuffer();
 
   try {

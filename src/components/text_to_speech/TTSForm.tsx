@@ -22,6 +22,9 @@ function TTSForm({
 }: TTSFormTypes) {
   const userId = useSession().data?.user?.id;
   const canUserGenerate = useUserStoreWithEq(hasUserTokens);
+  const removeUserAmountTokens = useUserStoreWithEq(
+    (state) => state.removeUserAmountTokens
+  );
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,6 +40,7 @@ function TTSForm({
         state,
         userId
       );
+      removeUserAmountTokens(1);
       setFileUrl(url);
       setBufferData({ buffer, responseFormat });
       setGeneratingVoice(false);
@@ -70,13 +74,13 @@ function TTSForm({
               "bg-green-700 text-xs p-1 md:p-2 text-md rounded-md hover:bg-green-800 transition cursor-pointer",
               {
                 "bg-neutral-700 hover:bg-neutral-700 cursor-not-allowed":
-                  generatingVoice,
+                  generatingVoice || !canUserGenerate,
               }
             )}
             type="submit"
             disabled={!canUserGenerate || generatingVoice}
           >
-            Generate
+            {!canUserGenerate ? "No tokens" : "Generate"}
           </button>
         </div>
       </form>
