@@ -11,6 +11,7 @@ import TTSMobileSettings from "@/components/text_to_speech/TTSMobileSettings";
 import { IoMdDownload } from "react-icons/io";
 import WaveForm from "@/components/text_to_speech/WaveForm";
 import TTSForm from "@/components/text_to_speech/TTSForm";
+import Loading from "@/components/Loading";
 
 export default function TTSPage() {
   const matches = useMediaQuery();
@@ -81,9 +82,9 @@ export default function TTSPage() {
                 <WaveForm matches={matches} fileUrl={fileUrl} />
               )}
               {generatingVoice && (
-                <p className="text-lg animate-pulse text-white/30">
-                  generating...
-                </p>
+                <div className="text-lg animate-pulse text-white/30">
+                  <Loading />
+                </div>
               )}
             </div>
           </div>

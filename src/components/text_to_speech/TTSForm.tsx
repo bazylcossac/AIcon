@@ -52,10 +52,7 @@ function TTSForm({
           }
           value={state.message}
           className={cn(
-            "p-6 rounded-2xl resize-none outline-none custom-scrollbar text-sm  md:text-md w-11/12 text-md placeholder:text-white/30",
-            {
-              "bg-black": canUserGenerate,
-            }
+            "p-6 rounded-2xl resize-none outline-none custom-scrollbar text-sm  md:text-md w-11/12 text-md placeholder:text-white/30"
           )}
           placeholder={
             generatingVoice
@@ -69,7 +66,13 @@ function TTSForm({
         ></textarea>
         <div className="flex justify-end m-2 absolute right-0 bottom-0">
           <button
-            className="bg-green-700 text-xs p-1 md:p-2 text-md rounded-md hover:bg-green-800 transition cursor-pointer "
+            className={cn(
+              "bg-green-700 text-xs p-1 md:p-2 text-md rounded-md hover:bg-green-800 transition cursor-pointer",
+              {
+                "bg-neutral-700 hover:bg-neutral-700 cursor-not-allowed":
+                  generatingVoice,
+              }
+            )}
             type="submit"
             disabled={!canUserGenerate || generatingVoice}
           >

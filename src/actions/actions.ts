@@ -68,6 +68,9 @@ export async function TSSOpenAIRequest(
       authorId: userId,
       url,
       type: `audio/${responseFormat}`,
+      prompt: message,
+      quality: "medium",
+      size: "",
     });
     return { url, buffer, responseFormat };
   } catch (error) {
