@@ -27,7 +27,15 @@ export const appRouter = router({
       try {
         await db
           .insert(schema.files)
-          .values({ authorId, url, type, prompt, quality, size });
+          .values({
+            authorId,
+            url,
+            type,
+            prompt,
+            quality,
+            size,
+            projectId: "1",
+          });
       } catch (err) {
         const error = err as Error;
         throw new Error(error.message);
@@ -73,7 +81,7 @@ export const appRouter = router({
         .select({ tokens: schema.users.tokens })
         .from(schema.users)
         .where(eq(schema.users.id, userId))
-      .limit(1)
+        .limit(1)
         .then((rows) => rows[0]);
       if (!tokens) {
         return 0;

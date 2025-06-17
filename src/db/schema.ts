@@ -20,7 +20,17 @@ export const users = pgTable("user", {
   image: text("image"),
 });
 
-
+export const projects = pgTable("project", {
+  id: text("id")
+    .$defaultFn(() => crypto.randomUUID())
+    .primaryKey(),
+  projectName: text("projectName").notNull(),
+  authorId: text("authorId")
+    .notNull()
+    .references(() => users.id),
+  imageUrl: text("url"),
+  createdAt: timestamp("createdAt").defaultNow(),
+});
 
 export const files = pgTable("file", {
   id: text("id")
@@ -32,6 +42,9 @@ export const files = pgTable("file", {
     .references(() => users.id)
     .notNull(),
   prompt: text("prompt").notNull(),
+  projectId: text("projectId")
+    .notNull()
+    .references(() => projects.id),
   quality: text("quality").notNull(),
   size: text("size").notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
