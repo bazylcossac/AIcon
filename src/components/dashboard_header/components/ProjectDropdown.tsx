@@ -20,12 +20,12 @@ function Dropdown() {
           </div>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-black text-white border-none outline-none">
-        <DropdownMenuLabel>Projects</DropdownMenuLabel>
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
+      <DropdownMenuContent className="bg-black text-white border-none outline-none max-w-[150px] [&>*]:truncate">
+        <DropdownMenuLabel className="mb-1">Projects</DropdownMenuLabel>
+        <DropdownMenuItem>Test playgronddsadasdasdas</DropdownMenuItem>
+        <DropdownMenuItem>Project 1</DropdownMenuItem>
+        <DropdownMenuItem>Work</DropdownMenuItem>
+        <DropdownMenuItem>Just for fun</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

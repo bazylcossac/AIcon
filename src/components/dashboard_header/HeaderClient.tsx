@@ -6,7 +6,7 @@ import React from "react";
 import { CgArrowsV } from "react-icons/cg";
 import MobileNavbar from "../dashboard_navbar/MobileNavbar";
 import useShortcutOpenInput from "@/lib/hooks/useShortcutOpenInput";
-import Dropdown from "./components/Dropdown";
+import Dropdown from "./components/ProjectDropdown";
 
 function HeaderClient({ session }: { session: Session }) {
   const setShowSearchBarDialog = useAppStore(

@@ -1,4 +1,3 @@
-
 import {
   text,
   pgTable,
@@ -20,6 +19,8 @@ export const users = pgTable("user", {
   tokens: integer("token").default(1).notNull(),
   image: text("image"),
 });
+
+
 
 export const files = pgTable("file", {
   id: text("id")

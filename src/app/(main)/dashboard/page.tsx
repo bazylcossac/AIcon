@@ -1,22 +1,14 @@
 "use client";
-
 import React from "react";
+import { FaPlus } from "react-icons/fa";
 import { trpc } from "@/trpc/trpcClient";
 
 function Page() {
-  const { data: users, isLoading } = trpc.getusers.useQuery();
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
   return (
-    <div>
-      <p>Users in db:</p>
-      <ul>
-        {users?.map((user) => (
-          <p key={user.id}>{user.name}</p>
-        ))}
-      </ul>
+    <div className="h-full w-full">
+      <div className="flex items-center justify-center w-44 h-44 bg-neutral-900 rounded-md m-2 hover:cursor-pointer hover:bg-neutral-950 transition">
+        <FaPlus className="" />
+      </div>
     </div>
   );
 }

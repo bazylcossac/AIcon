@@ -35,7 +35,7 @@ async function Header({ session }: { session: Session }) {
             href="/dashboard"
             className="text-sm text-white/70 hover:text-white hidden md:inline-block"
           >
-            Projects
+            Playgrounds
           </Link>
           <IoSettingsOutline className="font-bold text-white/70 hover:text-white cursor-pointer hidden md:inline-block" />
           <Image
