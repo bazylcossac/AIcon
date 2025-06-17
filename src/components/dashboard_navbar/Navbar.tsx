@@ -58,7 +58,7 @@ function Navbar({ session }: { session: Session }) {
                     "bg-neutral-700 text-white": pathName === "/dashboard",
                   })}
                 >
-                  Overview
+                  Projects
                 </Link>
               </ul>
             </div>

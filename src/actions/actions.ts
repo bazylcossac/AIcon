@@ -39,7 +39,7 @@ export async function TSSOpenAIRequest(
   const trpcServer = await createTrpcServer({ session });
   const speechFileName = `speech_${crypto.randomUUID()}.mp3`;
   const { model, instructions, voice, responseFormat, message } = settings;
-
+  trpcServer.removeUserTokenAmount(1);
   const response = await openai.audio.speech.create({
     model,
     input: message,
@@ -47,9 +47,7 @@ export async function TSSOpenAIRequest(
     voice,
     response_format: responseFormat,
   });
-  if (response.ok) {
-    trpcServer.removeUserTokenAmount(1);
-  }
+
   const buffer = await response.arrayBuffer();
 
   try {

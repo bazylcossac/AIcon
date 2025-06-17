@@ -36,11 +36,11 @@ function TTSForm({
       return;
     } else {
       setGeneratingVoice(true);
+      removeUserAmountTokens(1);
       const { url, buffer, responseFormat } = await TSSOpenAIRequest(
         state,
         userId
       );
-      removeUserAmountTokens(1);
       setFileUrl(url);
       setBufferData({ buffer, responseFormat });
       setGeneratingVoice(false);

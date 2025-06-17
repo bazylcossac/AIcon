@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Image Generation",
+    "route": "dashboard/images"
+  },
+  {
+    "name": "Text To Speech",
+    "route": "dashboard/text-to-spech"
+  }
+]

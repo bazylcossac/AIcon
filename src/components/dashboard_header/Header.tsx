@@ -4,7 +4,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Session } from "next-auth";
-import TokensAmount from "./TokensAmount";
+import TokensAmount from "./Tokens/TokensAmount";
 import { createTrpcServer } from "@/trpc/trpcServer";
 const HeaderClient = dynamic(() => import("./HeaderClient"));
 
@@ -35,7 +35,7 @@ async function Header({ session }: { session: Session }) {
             href="/dashboard"
             className="text-sm text-white/70 hover:text-white hidden md:inline-block"
           >
-            Dashboard
+            Projects
           </Link>
           <IoSettingsOutline className="font-bold text-white/70 hover:text-white cursor-pointer hidden md:inline-block" />
           <Image
