@@ -30,6 +30,14 @@ export const userRouter = router({
         throw new TRPCError({ code: "NOT_FOUND" });
       }
     }),
+  getAllUserFiles: protectedProcedure.query(async (opts) => {
+    const userId = opts.ctx.session.user?.id;
+    if (!userId) return;
+    return db
+      .select()
+      .from(schema.files)
+      .where(eq(schema.files.authorId, userId));
+  }),
   getUserTokens: protectedProcedure.query(async (opts) => {
     const userId = opts.ctx.session.user?.id;
     if (!userId) return;

@@ -10,7 +10,7 @@ const HeaderClient = dynamic(() => import("./HeaderClient"));
 
 async function Header({ session }: { session: Session }) {
   const trpcServer = await createTrpcServer({ session });
-  const tokens = await trpcServer.getUserTokens();
+  const tokens = await trpcServer.user.getUserTokens();
 
   return (
     <>
