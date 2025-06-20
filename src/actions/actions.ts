@@ -15,17 +15,16 @@ import OpenAI from "openai";
 import { UploadThingError } from "uploadthing/server";
 import { auth } from "@/auth";
 import { base64ToUInt } from "@/lib/functions/functions";
-import { sleep } from "@/lib/utils";
+
 import { GeneratedImageType } from "@/store/storeTypes";
-import { db } from "@/db";
-import { trpc } from "@/trpc/trpcClient";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET_KEY });
 
 export async function cleanupSession(sessionToken: string) {
   const session = await auth();
   const trpcServer = await createTrpcServer({ session });
-  await trpcServer.cleanupUserSession(sessionToken);
+
+  await trpcServer.auth.cleanupUserSession(sessionToken);
 }
 
 export async function TSSOpenAIRequest(
@@ -39,7 +38,7 @@ export async function TSSOpenAIRequest(
   const trpcServer = await createTrpcServer({ session });
   const speechFileName = `speech_${crypto.randomUUID()}.mp3`;
   const { model, instructions, voice, responseFormat, message } = settings;
-  trpcServer.removeUserTokenAmount(1);
+  trpcServer.user.removeUserTokenAmount(1);
   const response = await openai.audio.speech.create({
     model,
     input: message,
@@ -63,7 +62,7 @@ export async function TSSOpenAIRequest(
     const url = uploaded[0]!.data!.ufsUrl;
 
     // uploads to db
-    await trpcServer.uploadFile({
+    await trpcServer.files.uploadFile({
       authorId: userId,
       url,
       type: `audio/${responseFormat}`,
@@ -119,7 +118,7 @@ export async function ImageGenOpenAIRequest(
     const url = uploaded[0]!.data!.ufsUrl;
 
     // uploads to db
-    await trpcServer.uploadFile({
+    await trpcServer.files.uploadFile({
       authorId: userId,
       url,
       type: `image/png`,
