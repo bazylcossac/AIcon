@@ -12,12 +12,14 @@ import NavbarSkeleton from "./NavbarSkeleton";
 import { useAppStore } from "@/store/appStore";
 import SearchInputDialog from "../search_input_dialog/SearchInputDialog";
 import UserNavbar from "./components/UserNavbar";
+import useUserStore from "@/store/UserStore/User.bear";
 
 function Navbar({ session }: { session: Session }) {
   const [shortCut, setShortcut] = useState<"CTRL" | "⌘" | "">("");
   const showSearchBarDialog = useAppStore((state) => state.showSearchBarDialog);
   const pathName = usePathname();
   const isDesktop = useMediaQuery();
+
   useEffect(() => {
     const system = navigator.userAgent.toLowerCase();
     if (system.includes("win")) {
@@ -63,6 +65,7 @@ function Navbar({ session }: { session: Session }) {
                 </Link>
               </ul>
             </div>
+
             <UserNavbar />
 
             <div className="mt-6">

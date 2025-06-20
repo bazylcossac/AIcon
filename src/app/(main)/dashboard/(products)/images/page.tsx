@@ -14,7 +14,7 @@ async function ImagesPage() {
     redirect("/");
   }
   const trpcServer = await createTrpcServer({ session });
-  const images = await trpcServer.getUserImages(session?.user?.id);
+  const images = await trpcServer.user.getUserImages(session?.user?.id);
 
   return (
     <div className=" w-full h-full">

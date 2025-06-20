@@ -10,6 +10,7 @@ async function page() {
   }
   const trpcServer = await createTrpcServer({ session });
   const files = await trpcServer.user.getAllUserFiles();
+  console.log(files);
 
   return <section className="h-full w-full flex"></section>;
 }
