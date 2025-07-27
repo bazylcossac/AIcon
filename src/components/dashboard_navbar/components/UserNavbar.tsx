@@ -35,6 +35,7 @@ function UserNavbar() {
               "bg-neutral-700 text-white": pathName === "/dashboard/images",
               "text-neutral-700 cursor-default": !selecteduserProjectId,
             })}
+            prefetch
           >
             Images
           </Link>
@@ -48,6 +49,7 @@ function UserNavbar() {
                 pathName === "/dashboard/text-to-speech",
               "text-neutral-700 cursor-default": !selecteduserProjectId,
             })}
+            prefetch
           >
             Text to Speech
           </Link>
@@ -61,6 +63,7 @@ function UserNavbar() {
                 pathName === "/dashboard/speech-to-text",
               "text-neutral-700 cursor-default": !selecteduserProjectId,
             })}
+            prefetch
           >
             Speech to Text
           </Link>
@@ -90,6 +93,7 @@ function UserNavbar() {
               "bg-neutral-700 text-white": pathName === "/dashboard/storage",
               "text-neutral-700 cursor-default": !selecteduserProjectId,
             })}
+            prefetch
           >
             Storage
           </Link>

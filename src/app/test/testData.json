@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "sport": "football",
+    "name": "Ash",
+    "odds": 1
+  },
+  {
+    "id": 2,
+    "sport": "tenis",
+    "name": "Onyx",
+    "odds": 24
+  },
+  {
+    "id": 3,
+    "sport": "volleyball",
+    "name": "Onyx",
+    "odds": 1.9
+  },
+  {
+    "id": 4,
+    "sport": "handball",
+    "name": "Ash",
+    "odds": 5
+  },
+  {
+    "id": 5,
+    "sport": "football",
+    "name": "Ash",
+    "odds": 11
+  },
+  {
+    "id": 6,
+    "sport": "football",
+    "name": "Ballad",
+    "odds": 1
+  },
+  {
+    "id": 7,
+    "sport": "handball",
+    "name": "Ballad",
+    "odds": 100
+  }
+]

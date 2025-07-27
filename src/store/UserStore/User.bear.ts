@@ -5,6 +5,8 @@ export type InitialValuesTypes = {
   selectedUserProjectId: string | null;
 };
 
+
+
 export type StoreActions = {
   addUserAmountTokens: (amount: number) => void;
   removeUserAmountTokens: (amount: number) => void;

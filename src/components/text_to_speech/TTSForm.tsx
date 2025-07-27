@@ -1,7 +1,6 @@
 "use client";
 import { TSSOpenAIRequest } from "@/actions/actions";
 import { checkIfValid } from "@/lib/functions/functions";
-import { ActionType } from "@/lib/types";
 import { useSession } from "next-auth/react";
 import React, { FormEvent } from "react";
 import { toast } from "sonner";
