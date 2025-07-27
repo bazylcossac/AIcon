@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useReducer } from "react";
 import {
   Select,
   SelectContent,
@@ -9,21 +9,46 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "../ui/input";
+import useFilters from "@/lib/hooks/useFilters";
+import { TestIntialState } from "@/lib/types";
+import { testReducer } from "@/lib/utils";
+
 // searchParams: { [key: string]: string | string[] | undefined };
+
 function TextToSpeechSettings() {
+  const { filters, setFilters } = useFilters();
+  const [state, dispatch] = useReducer(testReducer, TestIntialState);
+
+  useEffect(() => {
+    dispatch({ type: "SET_NAME", payload: filters.name });
+    dispatch({ type: "SET_ODDS", payload: filters.odds });
+    dispatch({ type: "SET_SPORT", payload: filters.sport });
+  }, [filters]);
+
+  useEffect(() => {
+    setFilters({ name: state.name, odds: state.odds, sport: state.sport });
+  }, [state.name, state.sport, state.odds, setFilters]);
+
   return (
     <>
       <div className="">
         <p className="mb-2">Model</p>
-        <Select required>
+        <Select
+          required
+          defaultValue={state.sport}
+          onValueChange={(value) =>
+            dispatch({ type: "SET_SPORT", payload: value })
+          }
+        >
           <SelectTrigger className="w-[180px]  border-white/50">
             <SelectValue placeholder="Select model" />
           </SelectTrigger>
           <SelectContent className="bg-neutral-700 text-white">
-            <SelectItem value="gpt-4o-mini-tts">fotball</SelectItem>
-            <SelectItem value="gpt-4o-mini-tts">volleyball</SelectItem>
-            <SelectItem value="gpt-4o-mini-tts">tenis</SelectItem>
-            <SelectItem value="gpt-4o-mini-tts">handball</SelectItem>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="fotball">fotball</SelectItem>
+            <SelectItem value="volleyball">volleyball</SelectItem>
+            <SelectItem value="tennis">tenis</SelectItem>
+            <SelectItem value="handball">handball</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -32,11 +57,18 @@ function TextToSpeechSettings() {
       </div>
       <div>
         <p className="mb-2">Voice</p>
-        <Select required>
+        <Select
+          required
+          defaultValue={state.name}
+          onValueChange={(value) =>
+            dispatch({ type: "SET_NAME", payload: value })
+          }
+        >
           <SelectTrigger className="w-[180px] border-white/50">
             <SelectValue placeholder="Select voice" />
           </SelectTrigger>
           <SelectContent className="bg-neutral-700 text-white ">
+            <SelectItem value="all">All</SelectItem>
             <SelectItem value="alloy">Alloy</SelectItem>
             <SelectItem value="ash">Ash</SelectItem>
             <SelectItem value="ballad">Ballad</SelectItem>
@@ -53,7 +85,16 @@ function TextToSpeechSettings() {
       </div>
       <div>
         <p>Odds</p>
-        <Input type="number" />
+        <Input
+          type="number"
+          defaultValue={state.odds}
+          onChange={(value) =>
+            dispatch({
+              type: "SET_ODDS",
+              payload: value.toString(),
+            })
+          }
+        />
       </div>
     </>
   );

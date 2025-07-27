@@ -1,6 +1,11 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { ActionType, InitialType } from "./types";
+import {
+  ActionType,
+  InitialType,
+  TestActionType,
+  TestIntialType,
+} from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -25,3 +30,18 @@ export function reducer(state: InitialType, action: ActionType): InitialType {
   }
 }
 
+export function testReducer(
+  state: TestIntialType,
+  action: TestActionType
+): TestIntialType {
+  switch (action.type) {
+    case "SET_NAME":
+      return { ...state, name: action.payload };
+    case "SET_SPORT":
+      return { ...state, sport: action.payload };
+    case "SET_ODDS":
+      return { ...state, odds: action.payload.toString() };
+    default:
+      return state
+  }
+}

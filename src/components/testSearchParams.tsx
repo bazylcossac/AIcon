@@ -5,6 +5,7 @@ export default function TestSearchParams({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  console.log(searchParams);
   return (
     <>
       {testData?.map((item) => (

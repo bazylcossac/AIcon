@@ -11,7 +11,7 @@ async function test({
     <div>
       <TextToSpeechSettings />
 
-      <TestSearchParams searchParams={searchParams} />
+      <TestSearchParams searchParams={await searchParams} />
     </div>
   );
 }

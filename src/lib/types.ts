@@ -1,5 +1,3 @@
-import { dateDuration } from "drizzle-orm/gel-core";
-
 export const initalArgs = {
   model: "gpt-4o-mini-tts",
   instructions: "",
@@ -16,6 +14,19 @@ export type ActionType =
   | { type: "SET_VOICE"; payload: string }
   | { type: "SET_FORMAT"; payload: "mp3" | "wav" }
   | { type: "SET_MESSAGE"; payload: string };
+
+export type TestActionType =
+  | { type: "SET_SPORT"; payload: string }
+  | { type: "SET_NAME"; payload: string }
+  | { type: "SET_ODDS"; payload: string };
+
+export const TestIntialState = {
+  name: "all",
+  sport: "all",
+  odds: "0",
+};
+
+export type TestIntialType = typeof TestIntialState;
 
 export type ImagesDB = {
   id: string;
